@@ -2,7 +2,7 @@
 
 const db = require('../server/db')
 const {User} = require('../server/db/models')
-const {Product} = require('../server/db/products')
+const {Product} = require('../server/db/models')
 
 async function seed() {
   await db.sync({force: true})

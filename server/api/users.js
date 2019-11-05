@@ -16,7 +16,7 @@ router.get('/', async (req, res, next) => {
 })
 
 router.get('/:id', async (req, res, next) => {
-  // const user = await User.findById(req.params.id) 
+  // const user = await User.findById(req.params.id)
   const user = await User.findAll({
     where: {
       id: req.params.id
@@ -24,9 +24,9 @@ router.get('/:id', async (req, res, next) => {
     attributes: ['id', 'name', 'email']
   })
   if (user === null) {
-      res.sendStatus(404);
+    res.sendStatus(404)
   } else {
-      res.json(user)
+    res.json(user)
   }
 })
 

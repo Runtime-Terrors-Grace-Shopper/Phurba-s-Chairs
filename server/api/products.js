@@ -15,15 +15,14 @@ router.get('/', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-      if (!req.body) {
-          return res.sendStatus(400)
-      }
-      const newProduct = await Product.create(req.body)
-      res.json(newProduct)
+    if (!req.body) {
+      return res.sendStatus(400)
+    }
+    const newProduct = await Product.create(req.body)
+    res.json(newProduct)
   } catch (error) {
-      next(error)
+    next(error)
   }
-
 })
 
 router.get('/:id', async (req, res, next) => {
@@ -39,8 +38,7 @@ router.get('/:id', async (req, res, next) => {
   }
 })
 
-
-router.put(':id', async (req, res, next) => {
+router.put('/:id', async (req, res, next) => {
   try {
     const targetProduct = await Product.findByPk(req.params.id)
     const updatedProduct = await targetProduct.update(req.body)
@@ -52,15 +50,14 @@ router.put(':id', async (req, res, next) => {
 
 router.delete('/:id', async (req, res, next) => {
   try {
-      await Product.destroy({
-          where: {
-              id: req.params.id
-          }
-      })
-      res.sendStatus(204)
+    await Product.destroy({
+      where: {
+        id: req.params.id
+      }
+    })
+    res.sendStatus(204)
   } catch (error) {
-      next(error)
+    next(error)
   }
 })
 module.exports = router
-

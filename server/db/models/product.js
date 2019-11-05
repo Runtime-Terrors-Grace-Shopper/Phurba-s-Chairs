@@ -16,8 +16,8 @@ const Product = db.define('product', {
       min: 0
     }
   },
-  categoryID: {
-    type: Sequelize.INTEGER
+  imageUrl: {
+    type: Sequelize.STRING
   },
   description: {
     type: Sequelize.TEXT

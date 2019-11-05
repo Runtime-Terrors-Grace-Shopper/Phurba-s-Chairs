@@ -33,7 +33,7 @@ export const getAllProducts = () => async dispatch => {
 
 export const getSingleProduct = id => async dispatch => {
   const {data} = await axios.get(`/api/products/${id}`)
-  dispatch(getSingleProduct(data))
+  dispatch(gotSingleProduct(data))
 }
 
 const initialState = {

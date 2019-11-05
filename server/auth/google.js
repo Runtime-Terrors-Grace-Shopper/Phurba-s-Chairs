@@ -4,6 +4,9 @@ const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
 const {User} = require('../db/models')
 module.exports = router
 
+if (process.env.NODE_ENV !== 'development') {
+  require('../../secrets')
+}
 /**
  * For OAuth keys and other secrets, your Node process will search
  * process.env to find environment variables. On your production server,
@@ -30,16 +33,17 @@ if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
   const strategy = new GoogleStrategy(
     googleConfig,
     (token, refreshToken, profile, done) => {
+      console.log('Google Profile===>', profile)
       const googleId = profile.id
       const email = profile.emails[0].value
       const imgUrl = profile.photos[0].value
       const firstName = profile.name.givenName
       const lastName = profile.name.familyName
-      const fullName = profile.displayName
+      const name = profile.displayName
 
       User.findOrCreate({
         where: {googleId},
-        defaults: {email, imgUrl, firstName, lastName, fullName}
+        defaults: {email, imgUrl, name}
       })
         .then(([user]) => done(null, user))
         .catch(done)
@@ -54,7 +58,7 @@ if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
   )
 
   router.get(
-    '/callback',
+    '/verify',
     passport.authenticate('google', {
       successRedirect: '/home',
       failureRedirect: '/login'

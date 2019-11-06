@@ -27,6 +27,7 @@ const editedItemInCart = item => {
 }
 
 export const getCart = () => async dispatch => {
+  // try/catchhhhhhhh
   const {data} = await axios.get('/cart')
   dispatch(gotCart(data))
 }
@@ -68,6 +69,7 @@ const cartReducer = (state = cartState, action) => {
       return {
         ...state,
         cart: state.cart.filter(item => {
+          // niceee
           return item.id !== action.itemId
         })
       }

@@ -8,6 +8,7 @@ const OrderProduct = db.define('orderProduct', {
     autoIncrement: true
   },
   orderId: {
+    // not sure you need to concretely define these thanks to the associations
     type: Sequelize.INTEGER,
     allowNull: false
   },
@@ -22,6 +23,7 @@ const OrderProduct = db.define('orderProduct', {
     }
   },
   purchasingPrice: {
+    // worth thinking "do I need this?"
     type: Sequelize.DECIMAL(10, 2),
     validate: {
       min: 0.0

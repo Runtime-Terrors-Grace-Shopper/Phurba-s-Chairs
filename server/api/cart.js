@@ -40,7 +40,7 @@ router.delete('/:id', async (req, res, next) => {
     const targetItem = await OrderProduct.findByPk(req.params.id)
     if (targetItem.quantity <= 1) {
       await targetItem.destroy()
-      res.sendStatus(204)
+      res.sendStatus(204) // put this outside of if statement
     } else {
       targetItem.quantity--
       await targetItem.save()
@@ -52,6 +52,7 @@ router.delete('/:id', async (req, res, next) => {
 
 router.put('/:id', async (req, res, next) => {
   try {
+    // possibly handling 404 for no params.id
     const itemToEdit = await OrderProduct.findByPk(req.params.id)
     const updatedItem = await itemToEdit.update(req.body)
     res.status(200).send(updatedItem)

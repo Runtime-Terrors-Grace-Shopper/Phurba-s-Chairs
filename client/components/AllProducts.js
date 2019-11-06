@@ -7,7 +7,7 @@ class AllProducts extends React.Component {
   constructor(props) {
     super()
   }
-
+  // could be nice to make sub-folders for your components
   componentDidMount() {
     this.props.getAllProducts()
   }
@@ -15,6 +15,7 @@ class AllProducts extends React.Component {
     let categories = []
     let products = this.props.products
     products.forEach(product => {
+      // this feels quirky
       if (!categories.includes(product.category.name)) {
         categories.push(product.category.name)
       }
@@ -25,6 +26,8 @@ class AllProducts extends React.Component {
         {categories.map((category, index) => {
           return (
             <ul key={index}>
+              {' '}
+              {/* could be nice to have this as a separate component...modularity! */}
               <h1>{category}s</h1>
               {products.map((product, index) => {
                 if (product.category.name === category) {

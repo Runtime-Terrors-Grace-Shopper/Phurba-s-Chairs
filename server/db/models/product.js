@@ -3,11 +3,12 @@ const db = require('../db')
 
 const Product = db.define('product', {
   name: {
+    // validates
     type: Sequelize.STRING,
     allowNull: false
   },
   price: {
-    type: Sequelize.DECIMAL(10, 2),
+    type: Sequelize.DECIMAL(10, 2), // be veryyyyyy careful with calculating prices
     allowNull: false
   },
   stock: {

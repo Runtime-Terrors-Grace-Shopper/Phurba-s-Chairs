@@ -16,7 +16,7 @@ router.get('/', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   try {
     if (!req.body) {
-      return res.sendStatus(400)
+      return res.sendStatus(400) // niceeeeeee
     }
     const newProduct = await Product.create(req.body)
     res.json(newProduct)
@@ -40,6 +40,8 @@ router.get('/:id', async (req, res, next) => {
 
 router.put('/:id', async (req, res, next) => {
   try {
+    // same w/ 404 missing params.id
+    // should be some type of isAdmin we check for
     const targetProduct = await Product.findByPk(req.params.id)
     const updatedProduct = await targetProduct.update(req.body)
     res.status(202).json(updatedProduct)
@@ -50,6 +52,7 @@ router.put('/:id', async (req, res, next) => {
 
 router.delete('/:id', async (req, res, next) => {
   try {
+    // same w/ isAdmin
     await Product.destroy({
       where: {
         id: req.params.id

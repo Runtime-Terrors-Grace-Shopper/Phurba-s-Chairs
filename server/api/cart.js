@@ -43,6 +43,7 @@ router.delete('/:id', async (req, res, next) => {
       res.sendStatus(204)
     } else {
       targetItem.quantity--
+      await targetItem.save()
     }
   } catch (error) {
     next(error)

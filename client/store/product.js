@@ -36,12 +36,27 @@ export const getSingleProduct = id => async dispatch => {
   dispatch(gotSingleProduct(data))
 }
 
-const initialState = {
+export const addProduct = body => async dispatch => {
+  const {data} = await axios.post('/api/products', body)
+  dispatch(addedProduct(data))
+}
+
+export const deleteProduct = id => async dispatch => {
+  await axios.delete(`/api/products/${id}`)
+  dispatch(deletedProduct(id))
+}
+
+export const updateProduct = (id, body) => async dispatch => {
+  const {data} = await axios.put(`/api/products/${id}`, body)
+  dispatch(updatedProduct(data))
+}
+
+const productState = {
   allProducts: [],
   singleProduct: {}
 }
 
-const productReducer = (state = initialState, action) => {
+const productReducer = (state = productState, action) => {
   switch (action.type) {
     case GOT_ALL_PRODUCTS:
       return {...state, allProducts: action.products}

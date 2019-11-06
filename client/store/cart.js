@@ -27,27 +27,27 @@ const editedItemInCart = item => {
 }
 
 export const getCart = () => async dispatch => {
-  const {data} = await axios.get('/route')
+  const {data} = await axios.get('/cart')
   dispatch(gotCart(data))
 }
 
 export const getItemInCart = id => async dispatch => {
-  const {data} = await axios.get(`/route/${id}`)
+  const {data} = await axios.get(`/cart/${id}`)
   dispatch(gotItemInCart(data))
 }
 
 export const addItemToCart = body => async dispatch => {
-  const {data} = await axios.post('/route', body)
+  const {data} = await axios.post('/cart', body)
   dispatch(addedItemToCart(data))
 }
 
 export const deleteItemFromCart = id => async dispatch => {
-  await axios.delete(`/route/${id}`)
+  await axios.delete(`/cart/${id}`)
   dispatch(deletedItemFromCart(id))
 }
 
 export const editItemInCart = (id, body) => async dispatch => {
-  const {data} = await axios.put(`/route/${id}`, body)
+  const {data} = await axios.put(`/cart/${id}`, body)
   dispatch(editedItemInCart(data))
 }
 

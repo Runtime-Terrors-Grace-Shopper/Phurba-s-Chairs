@@ -3,14 +3,23 @@ const {User, Order, Product, OrderProduct} = require('../db/models')
 
 router.get('/', async (req, res, next) => {
   try {
-    const data = await Order.findOne({
-      where: {
-        userId: req.user.id,
-        status: 'Active'
-      },
-      include: [{model: Product}]
-    })
-    res.json(data.products)
+    if (req.user) {
+      const order = await Order.getActiveOrder(req.user)
+      // order.orderProducts = await order.addProducts([
+      //   {
+      //     productId: 1,
+      //     quantity: 2,
+      //     purchasingPrice: 10.00
+      //   }
+      // ])
+      await order.save()
+      res.json(order.orderProducts)
+    } else {
+      if (!req.session.cart) {
+        req.session.cart = []
+      }
+      res.json(req.session.cart)
+    }
   } catch (error) {
     next(error)
   }

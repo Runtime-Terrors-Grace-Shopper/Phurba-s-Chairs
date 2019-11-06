@@ -4,11 +4,13 @@ const db = require('../db')
 const Order = db.define('order', {
   shippingAddress: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
+    defaultValue: 'Fullstack'
   },
   creditCard: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
+    defaultValue: '12345'
   },
   status: {
     type: Sequelize.STRING,

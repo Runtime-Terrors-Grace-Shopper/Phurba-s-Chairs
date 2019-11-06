@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {User} = require('../db/models')
+const {User, Order, Product} = require('../db/models')
 
 router.get('/', async (req, res, next) => {
   try {
@@ -16,17 +16,28 @@ router.get('/', async (req, res, next) => {
 })
 
 router.get('/:id', async (req, res, next) => {
-  // const user = await User.findById(req.params.id) 
-  const user = await User.findAll({
+  // const user = await User.findById(req.params.id)
+
+  const user = await User.findOne({
     where: {
       id: req.params.id
     },
-    attributes: ['id', 'name', 'email']
+    attributes: ['id', 'name', 'email'],
+    include: [
+      {
+        model: Order,
+        where: {
+          status: 'Completed'
+        },
+        include: [{model: Product}]
+      }
+    ]
   })
+
   if (user === null) {
-      res.sendStatus(404);
+    res.sendStatus(404)
   } else {
-      res.json(user)
+    res.json(user)
   }
 })
 

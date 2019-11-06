@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const {User, Order, Product, OrderProduct} = require('../db/models')
 
+// localstorage vs sessions for guest cart. NO storing in database
 router.get('/', async (req, res, next) => {
   try {
     const data = await Order.findOne({

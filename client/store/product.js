@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {runInNewContext} from 'vm'
 
 const GOT_ALL_PRODUCTS = 'GOT_ALL_PRODUCTS'
 const GOT_SINGLE_PRODUCT = 'GOT_SINGLE_PRODUCT'
@@ -27,13 +28,21 @@ const updatedProduct = product => {
 }
 
 export const getAllProducts = () => async dispatch => {
-  const {data} = await axios.get('/api/products')
-  dispatch(gotAllProducts(data))
+  try {
+    const {data} = await axios.get('/api/products')
+    dispatch(gotAllProducts(data))
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 export const getSingleProduct = id => async dispatch => {
-  const {data} = await axios.get(`/api/products/${id}`)
-  dispatch(gotSingleProduct(data))
+  try {
+    const {data} = await axios.get(`/api/products/${id}`)
+    dispatch(gotSingleProduct(data))
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 export const addProduct = body => async dispatch => {

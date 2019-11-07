@@ -26,6 +26,26 @@ router.get('/:id', async (req, res, next) => {
   }
 })
 
+router.post('/checkout', async (req, res, next) => {
+  try {
+    const data = await Order.findOne({
+      where: {
+        userId: req.user.id,
+        status: 'Active'
+      }
+    })
+    await data.update({status: 'Completed'})
+    const newOrder = await Order.create({
+      shippingAddress: data.shippingAddress,
+      creditCard: data.creditCard,
+      userId: data.userId
+    })
+    res.json(newOrder)
+  } catch (error) {
+    next(error)
+  }
+})
+
 router.post('/', async (req, res, next) => {
   try {
     const newItem = await OrderProduct.create(req.body)

@@ -5,13 +5,13 @@ router.get('/', async (req, res, next) => {
   try {
     if (req.user) {
       const order = await Order.getActiveOrder(req.user)
-      order.orderProducts = await order.addProducts([
-        {
-          productId: 1,
-          quantity: 2,
-          purchasingPrice: 10.0
-        }
-      ])
+      // order.orderProducts = await order.addProducts([
+      //   {
+      //     productId: 1,
+      //     quantity: 2,
+      //     purchasingPrice: 10.0
+      //   }
+      // ])
       res.json(order.orderProducts)
     } else {
       if (!req.session.cart) {

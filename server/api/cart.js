@@ -8,7 +8,8 @@ router.get('/', async (req, res, next) => {
       order.orderProducts = await order.addProducts([
         {
           productId: 1,
-          quantity: 2
+          quantity: 2,
+          purchasingPrice: 10.0
         }
       ])
       res.json(order.orderProducts)
@@ -28,6 +29,26 @@ router.get('/:id', async (req, res, next) => {
     const cartItem = await OrderProduct.findByPk(req.params.id)
     if (!cartItem) res.sendStatus(404)
     else res.json(cartItem)
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.post('/checkout', async (req, res, next) => {
+  try {
+    const data = await Order.findOne({
+      where: {
+        userId: req.user.id,
+        status: 'Active'
+      }
+    })
+    await data.update({status: 'Completed'})
+    const newOrder = await Order.create({
+      shippingAddress: data.shippingAddress,
+      creditCard: data.creditCard,
+      userId: data.userId
+    })
+    res.json(newOrder)
   } catch (error) {
     next(error)
   }

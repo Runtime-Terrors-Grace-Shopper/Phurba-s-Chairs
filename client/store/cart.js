@@ -1,10 +1,15 @@
 import axios from 'axios'
 
+const CHECKED_OUT_CART = 'CHECKED_OUT_CART'
 const GOT_CART = 'GOT_CART'
 const GOT_ITEM_IN_CART = 'GOT_ITEM_IN_CART'
 const ADDED_ITEM_TO_CART = 'ADDED_ITEM_TO_CART'
 const DELETED_ITEM_FROM_CART = 'DELETED_ITEM_FROM_CART'
 const EDITED_ITEM_IN_CART = 'EDITED_ITEM_IN_CART'
+
+const checkedOutCart = () => {
+  return {type: CHECKED_OUT_CART}
+}
 
 const gotCart = items => {
   return {type: GOT_CART, items}
@@ -26,29 +31,58 @@ const editedItemInCart = item => {
   return {type: EDITED_ITEM_IN_CART, item}
 }
 
+export const checkoutCart = () => async dispatch => {
+  try {
+    await axios.post('/api/cart/checkout')
+    dispatch(checkedOutCart())
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 export const getCart = () => async dispatch => {
-  const {data} = await axios.get('/cart')
-  dispatch(gotCart(data))
+  try {
+    const {data} = await axios.get('/api/cart')
+    dispatch(gotCart(data))
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 export const getItemInCart = id => async dispatch => {
-  const {data} = await axios.get(`/cart/${id}`)
-  dispatch(gotItemInCart(data))
+  try {
+    const {data} = await axios.get(`/api/cart/${id}`)
+    dispatch(gotItemInCart(data))
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 export const addItemToCart = body => async dispatch => {
-  const {data} = await axios.post('/cart', body)
-  dispatch(addedItemToCart(data))
+  try {
+    const {data} = await axios.post('/api/cart', body)
+    dispatch(addedItemToCart(data))
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 export const deleteItemFromCart = id => async dispatch => {
-  await axios.delete(`/cart/${id}`)
-  dispatch(deletedItemFromCart(id))
+  try {
+    await axios.delete(`/api/cart/${id}`)
+    dispatch(deletedItemFromCart(id))
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 export const editItemInCart = (id, body) => async dispatch => {
-  const {data} = await axios.put(`/cart/${id}`, body)
-  dispatch(editedItemInCart(data))
+  try {
+    const {data} = await axios.put(`/api/cart/${id}`, body)
+    dispatch(editedItemInCart(data))
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 const cartState = {
@@ -78,6 +112,8 @@ const cartReducer = (state = cartState, action) => {
           return item.id === action.item.id ? action.item : item
         })
       }
+    case CHECKED_OUT_CART:
+      return {...state, cart: []}
     default:
       return state
   }

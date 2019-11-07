@@ -1,14 +1,34 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {getSingleProduct} from '../store/product'
+import {addItemToCart} from '../store/cart'
 
 class SingleProduct extends React.Component {
   constructor(props) {
     super()
+    this.state = {quantity: 0}
+    this.addToCart = this.addToCart.bind(this)
+    this.handleChange = this.handleChange.bind(this)
   }
 
   componentDidMount() {
     this.props.getSingleProduct(this.props.match.params.id)
+  }
+
+  addToCart(e) {
+    e.preventDefault()
+    const {id, price} = this.props.singleProduct
+    console.log(this.state.quantity)
+    const item = {
+      id,
+      price,
+      quantity: this.state.quantity
+    }
+    this.props.addItemToCart(item)
+  }
+  handleChange(e) {
+    e.preventDefault()
+    this.setState({quantity: e.target.value})
   }
 
   render() {
@@ -28,8 +48,16 @@ class SingleProduct extends React.Component {
         <p>
           {description},there is only {stock} left
         </p>
-        <input type="number" placeholder="Quantity" />
-        <button type="button">ADD TO CART</button>
+        <form onSubmit={e => this.addToCart(e)}>
+          <input
+            type="number"
+            placeholder="Quantity"
+            value={this.state.quantity}
+            onChange={this.handleChange}
+          />
+          <input type="submit" value="ADD TO CART" />
+        </form>
+
         <button type="button">BUY NOW</button>
       </div>
     )
@@ -40,7 +68,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  getSingleProduct: id => dispatch(getSingleProduct(id))
+  getSingleProduct: id => dispatch(getSingleProduct(id)),
+  addItemToCart: item => dispatch(addItemToCart(item))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleProduct)

@@ -5,13 +5,10 @@ router.get('/', async (req, res, next) => {
   try {
     if (req.user) {
       const order = await Order.getActiveOrder(req.user)
-      // order.orderProducts = await order.addProducts([
-      //   {
-      //     productId: 1,
-      //     quantity: 2,
-      //     purchasingPrice: 10.0
-      //   }
-      // ])
+      if (req.session.cart) {
+        order.orderProducts = await order.addProducts(req.session.cart)
+      }
+      req.session.cart = []
       res.json(order.orderProducts)
     } else {
       if (!req.session.cart) {
@@ -34,6 +31,29 @@ router.get('/:id', async (req, res, next) => {
   }
 })
 
+router.post('/', async (req, res, next) => {
+  try {
+    console.log(req.body)
+    const {id, price} = req.body
+    const quantity = +req.body.quantity
+    let newItem
+    if (req.user) {
+      newItem = await OrderProduct.create(req.body)
+    } else {
+      newItem = {
+        productId: id,
+        quantity,
+        purchasingPrice: price
+      }
+      req.session.cart.push(newItem)
+    }
+
+    if (newItem) res.status(201).send(newItem)
+  } catch (error) {
+    next(error)
+  }
+})
+
 router.post('/checkout', async (req, res, next) => {
   try {
     const data = await Order.findOne({
@@ -49,15 +69,6 @@ router.post('/checkout', async (req, res, next) => {
       userId: data.userId
     })
     res.json(newOrder)
-  } catch (error) {
-    next(error)
-  }
-})
-
-router.post('/', async (req, res, next) => {
-  try {
-    const newItem = await OrderProduct.create(req.body)
-    res.status(201).send(newItem)
   } catch (error) {
     next(error)
   }

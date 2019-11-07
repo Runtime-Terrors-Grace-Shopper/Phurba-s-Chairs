@@ -16,6 +16,9 @@ const Product = db.define('product', {
       min: 0
     }
   },
+  category: {
+    type: Sequelize.ENUM(['Chair', 'Table'])
+  },
   imageUrl: {
     type: Sequelize.STRING
   },

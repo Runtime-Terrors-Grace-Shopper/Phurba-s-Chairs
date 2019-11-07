@@ -1,13 +1,7 @@
 'use strict'
 
 const db = require('../server/db')
-const {
-  User,
-  Product,
-  Order,
-  Category,
-  OrderProduct
-} = require('../server/db/models')
+const {User, Product, Order, OrderProduct} = require('../server/db/models')
 
 async function seed() {
   await db.sync({force: true})
@@ -48,11 +42,6 @@ async function seed() {
     })
   ])
 
-  const categories = await Promise.all([
-    Category.create({name: 'Chair'}),
-    Category.create({name: 'Table'})
-  ])
-
   const products = await Promise.all([
     Product.create({
       name: 'Sofa Chair',
@@ -60,7 +49,7 @@ async function seed() {
       stock: '98',
       imageUrl:
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQR9kxQQOXVjJas4QRQGwuZoJKukmohKNFvFAKwPUX7lDPfCQjb0Q&s',
-      categoryId: 1,
+      category: 'Chair',
       color: 'Blue',
       description: 'A comfy place to sit'
     }),
@@ -70,7 +59,7 @@ async function seed() {
       stock: '37',
       imageUrl:
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQR9kxQQOXVjJas4QRQGwuZoJKukmohKNFvFAKwPUX7lDPfCQjb0Q&s',
-      categoryId: 2,
+      category: 'Table',
       color: 'Black',
       description: 'Where you eat'
     }),
@@ -80,7 +69,7 @@ async function seed() {
       stock: '52',
       imageUrl:
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQR9kxQQOXVjJas4QRQGwuZoJKukmohKNFvFAKwPUX7lDPfCQjb0Q&s',
-      categoryId: 1,
+      category: 'Chair',
       color: 'Black',
       description: 'Where you sit when you eat'
     }),
@@ -90,7 +79,7 @@ async function seed() {
       stock: '14',
       imageUrl:
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQR9kxQQOXVjJas4QRQGwuZoJKukmohKNFvFAKwPUX7lDPfCQjb0Q&s',
-      categoryId: 2,
+      category: 'Table',
       color: 'Brown',
       description: 'State of the art work desk'
     })
@@ -144,13 +133,13 @@ async function seed() {
     })
   ])
 
-  console.log(
-    `seeded ${users.length} users, ${products.length} products, ${
-      categories.length
-    } categories, ${orders.length} orders, and ${
-      orderProducts.length
-    } and order-products`
-  )
+  // console.log(
+  //   `seeded ${users.length} users, ${products.length} products, ${
+  //     categories.length
+  //   } categories, ${orders.length} orders, and ${
+  //     orderProducts.length
+  //   } and order-products`
+  // )
   console.log(`seeded successfully`)
 }
 

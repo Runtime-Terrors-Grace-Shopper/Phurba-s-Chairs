@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {User, Order, Product} = require('../db/models')
+const {User, Order, Product, OrderProduct} = require('../db/models')
 
 router.get('/', async (req, res, next) => {
   try {
@@ -16,8 +16,6 @@ router.get('/', async (req, res, next) => {
 })
 
 router.get('/:id', async (req, res, next) => {
-  // const user = await User.findById(req.params.id)
-
   const user = await User.findOne({
     where: {
       id: req.params.id
@@ -29,7 +27,17 @@ router.get('/:id', async (req, res, next) => {
         where: {
           status: 'Completed'
         },
-        include: [{model: Product}]
+        include: [
+          {
+            model: OrderProduct,
+            include: [
+              {
+                model: Product,
+                as: 'product'
+              }
+            ]
+          }
+        ]
       }
     ]
   })

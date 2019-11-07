@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom'
 
 const CartItem = props => {
   const {id, name, price, quantity} = props
-  console.log(quantity)
+  console.log('id', id)
   return (
     <div>
       <Link to={`/products/${id}`}>

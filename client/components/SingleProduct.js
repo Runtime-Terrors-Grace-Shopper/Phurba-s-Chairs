@@ -12,7 +12,6 @@ class SingleProduct extends React.Component {
   }
 
   render() {
-    console.log(this.props.singleProduct)
     const {
       name,
       price,

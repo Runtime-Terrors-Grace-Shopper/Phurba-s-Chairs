@@ -22,12 +22,10 @@ class Cart extends React.Component {
     if (cart.length <= 0) {
       return null
     }
-    // console.log('cart', cart)
-    // console.log('cart zero', cart[0].orderProduct.quantity)
     let total = 0
     cart.forEach(item => {
-      let itemTotal = item.price * item.orderProduct.quantity
-      total = total += itemTotal
+      let itemTotal = item.purchasingPrice * item.quantity
+      total += itemTotal
     })
     return (
       <div>
@@ -36,10 +34,10 @@ class Cart extends React.Component {
           {cart.map(item => (
             <div key={item.id}>
               <CartItem
-                id={item.id}
-                name={item.name}
-                price={item.price}
-                quantity={item.orderProduct.quantity}
+                // id={item.productId}
+                name={item.purchasingPrice}
+                //price={item.price}
+                // quantity={item.quantity}
               />
             </div>
           ))}

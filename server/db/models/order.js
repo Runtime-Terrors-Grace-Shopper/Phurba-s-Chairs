@@ -6,11 +6,8 @@ const OrderProduct = require('./orderProduct')
 const Order = db.define('order', {
   shippingAddress: {
     type: Sequelize.STRING,
-    allowNull: false
-  },
-  creditCard: {
-    type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
+    defaultValue: ''
   },
   status: {
     type: Sequelize.STRING,
@@ -29,7 +26,24 @@ Order.getActiveOrder = async user => {
         userId: user.id,
         status: 'Active'
       },
-      include: [{model: OrderProduct}]
+      include: [
+        {
+          model: OrderProduct,
+          include: [
+            {
+              model: Product,
+              as: 'product',
+              attributes: [
+                'category',
+                'color',
+                'description',
+                'name',
+                'imageUrl'
+              ]
+            }
+          ]
+        }
+      ]
     })
     return data
   } catch (error) {

@@ -26,7 +26,24 @@ Order.getActiveOrder = async user => {
         userId: user.id,
         status: 'Active'
       },
-      include: [{model: OrderProduct}]
+      include: [
+        {
+          model: OrderProduct,
+          include: [
+            {
+              model: Product,
+              as: 'product',
+              attributes: [
+                'category',
+                'color',
+                'description',
+                'name',
+                'imageUrl'
+              ]
+            }
+          ]
+        }
+      ]
     })
     return data
   } catch (error) {

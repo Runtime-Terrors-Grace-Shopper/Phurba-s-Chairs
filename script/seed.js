@@ -105,19 +105,19 @@ async function seed() {
 
   const orderProducts = await Promise.all([
     OrderProduct.create({
-      orderId: 5,
+      orderId: 1,
       productId: 1,
       quantity: 3,
       purchasingPrice: 5.0
     }),
     OrderProduct.create({
-      orderId: 5,
+      orderId: 1,
       productId: 3,
       quantity: 2,
       purchasingPrice: 2.0
     }),
     OrderProduct.create({
-      orderId: 5,
+      orderId: 1,
       productId: 2,
       quantity: 2,
       purchasingPrice: 4.0
@@ -144,10 +144,8 @@ async function seed() {
 
   console.log(
     `seeded ${users.length} users, ${products.length} products, ${
-      categories.length
-    } categories, ${orders.length} orders, and ${
-      orderProducts.length
-    } and order-products`
+      orders.length
+    } orders, and ${orderProducts.length} and order-products`
   )
   console.log(`seeded successfully`)
 }

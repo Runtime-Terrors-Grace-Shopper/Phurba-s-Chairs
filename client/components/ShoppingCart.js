@@ -19,6 +19,7 @@ class Cart extends React.Component {
 
   render() {
     const {cart} = this.props
+
     if (cart.length <= 0) {
       return null
     }

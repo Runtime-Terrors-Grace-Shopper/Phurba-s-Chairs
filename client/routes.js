@@ -53,7 +53,6 @@ const mapDispatch = dispatch => {
   return {
     loadInitialData() {
       dispatch(getUser())
-      dispatch(getCart())
     }
   }
 }

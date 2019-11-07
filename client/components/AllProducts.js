@@ -14,9 +14,11 @@ class AllProducts extends React.Component {
   render() {
     let categories = []
     let products = this.props.products
+    console.log('hello', products)
     products.forEach(product => {
-      if (!categories.includes(product.category.name)) {
-        categories.push(product.category.name)
+      console.log('cate', categories)
+      if (!categories.includes(product.category)) {
+        categories.push(product.category)
       }
     })
 
@@ -27,7 +29,7 @@ class AllProducts extends React.Component {
             <ul key={index}>
               <h1>{category}s</h1>
               {products.map((product, index) => {
-                if (product.category.name === category) {
+                if (product.category === category) {
                   return (
                     <li key={index}>
                       <Link to={`/products/${product.id}`}>{product.name}</Link>

@@ -44,12 +44,14 @@ Order.prototype.addProducts = async function(guestCart) {
   try {
     const orderId = this.id
     const userCart = this.orderProducts
+
     let updated = false
     for (let i = 0; i < guestCart.length; i++) {
       updated = false
       for (let j = 0; j < userCart.length; j++) {
         if (guestCart[i].productId === userCart[j].productId) {
-          userCart[i].quantity += guestCart[i].quantity
+          let quantity = userCart[j].quantity + guestCart[i].quantity
+          userCart[j].update({quantity})
           updated = true
           break
         }
@@ -61,10 +63,10 @@ Order.prototype.addProducts = async function(guestCart) {
           quantity: guestCart[i].quantity,
           purchasingPrice: guestCart[i].purchasingPrice
         })
+        orderProduct.save()
         userCart.push(orderProduct)
       }
     }
-    console.log('The userCart is ------>', userCart)
     return userCart
   } catch (error) {
     console.log(error)

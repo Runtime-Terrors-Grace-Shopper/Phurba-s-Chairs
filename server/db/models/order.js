@@ -6,11 +6,8 @@ const OrderProduct = require('./orderProduct')
 const Order = db.define('order', {
   shippingAddress: {
     type: Sequelize.STRING,
-    allowNull: false
-  },
-  creditCard: {
-    type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
+    defaultValue: ''
   },
   status: {
     type: Sequelize.STRING,

@@ -89,57 +89,66 @@ async function seed() {
     Order.create({
       userId: 1,
       shippingAddress: '1200 2nd Ave, New York, NY, 10005',
-      creditCard: '1000',
-      status: 'Active'
+      status: 'Completed'
     }),
     Order.create({
       userId: 1,
       shippingAddress: '1100 3rd Ave, New York, NY, 10005',
-      creditCard: '5000',
       status: 'Completed'
     }),
     Order.create({
       userId: 2,
       shippingAddress: '800 5th Ave, New York, NY, 10015',
-      creditCard: '2500',
       status: 'Completed'
     })
   ])
 
   const orderProducts = await Promise.all([
     OrderProduct.create({
-      orderId: 1,
+      orderId: 5,
       productId: 1,
       quantity: 3,
       purchasingPrice: 5.0
     }),
     OrderProduct.create({
-      orderId: 1,
+      orderId: 5,
       productId: 3,
       quantity: 2,
       purchasingPrice: 2.0
     }),
     OrderProduct.create({
-      orderId: 1,
+      orderId: 5,
       productId: 2,
       quantity: 2,
       purchasingPrice: 4.0
     }),
     OrderProduct.create({
-      orderId: 2,
+      orderId: 6,
+      productId: 2,
+      quantity: 2,
+      purchasingPrice: 4.0
+    }),
+    OrderProduct.create({
+      orderId: 6,
+      productId: 1,
+      quantity: 2,
+      purchasingPrice: 4.0
+    }),
+    OrderProduct.create({
+      orderId: 7,
       productId: 2,
       quantity: 2,
       purchasingPrice: 4.0
     })
   ])
 
-  // console.log(
-  //   `seeded ${users.length} users, ${products.length} products, ${
-  //     categories.length
-  //   } categories, ${orders.length} orders, and ${
-  //     orderProducts.length
-  //   } and order-products`
-  // )
+  console.log(
+    `seeded ${users.length} users, ${products.length} products, ${
+      categories.length
+    } categories, ${orders.length} orders, and ${
+      orderProducts.length
+    } and order-products`
+  )
   console.log(`seeded successfully`)
 }
 

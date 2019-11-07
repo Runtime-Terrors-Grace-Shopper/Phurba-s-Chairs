@@ -1,7 +1,9 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import {Link, Redirect} from 'react-router-dom'
 import {getCart, checkoutCart} from '../store/cart'
 import CartItem from './CartItem'
+import OrderDetail from './OrderDetail'
 
 class Cart extends React.Component {
   constructor(props) {
@@ -19,7 +21,6 @@ class Cart extends React.Component {
 
   render() {
     const {cart} = this.props
-
     if (cart.length <= 0) {
       return null
     }
@@ -47,9 +48,16 @@ class Cart extends React.Component {
             <div>
               <p>{total.toFixed(2)}</p>
               <div>
-                <button type="submit" onClick={() => this.handleSubmit()}>
-                  Checkout
-                </button>
+                <Link
+                  to={{
+                    pathname: '/cart/checkout',
+                    state: {id: cart[0].orderId, total: total.toFixed(2)}
+                  }}
+                >
+                  <button type="submit" onClick={() => this.handleSubmit()}>
+                    Checkout
+                  </button>
+                </Link>
               </div>
             </div>
           </div>

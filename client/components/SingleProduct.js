@@ -18,7 +18,6 @@ class SingleProduct extends React.Component {
   addToCart(e) {
     e.preventDefault()
     const {id, price} = this.props.singleProduct
-    console.log(this.state.quantity)
     const item = {
       id,
       price,

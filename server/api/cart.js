@@ -33,12 +33,19 @@ router.get('/:id', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    console.log(req.body)
     const {id, price} = req.body
     const quantity = +req.body.quantity
     let newItem
     if (req.user) {
-      newItem = await OrderProduct.create(req.body)
+      let order = await Order.getActiveOrder(req.user)
+      let item = {
+        orderId: order.id,
+        productId: id,
+        quantity,
+        purchasingPrice: price
+      }
+      newItem = await OrderProduct.create(item)
+      await newItem.save()
     } else {
       newItem = {
         productId: id,

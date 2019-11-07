@@ -30,7 +30,7 @@ class OrderDetail extends React.Component {
         <div>
           <h3>Order Summary:</h3>
           <p>{this.state.products}</p>
-          <p>{this.props.location.state.total}</p>
+          <p>{this.props.match.params.total}</p>
           <p>{this.state.address}</p>
         </div>
       </div>

@@ -34,7 +34,7 @@ class Cart extends React.Component {
         <h3>Cart</h3>
         <div>
           {cart.map(item => (
-            <div key={item.id}>
+            <div key={item.productId}>
               <CartItem
                 id={item.productId}
                 name={item.purchasingPrice}

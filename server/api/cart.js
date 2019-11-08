@@ -34,7 +34,12 @@ router.get('/:id', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   try {
     const {id, price} = req.body
-    const quantity = +req.body.quantity
+    let quantity
+    if (req.body.quantity) {
+      quantity = +req.body.quantity
+    } else {
+      quantity = 1
+    }
     let newItem
     if (req.user) {
       let order = await Order.getActiveOrder(req.user)
@@ -44,15 +49,23 @@ router.post('/', async (req, res, next) => {
         quantity,
         purchasingPrice: price
       }
-      newItem = await OrderProduct.create(item)
-      await newItem.save()
+
+      if (order.inCart(id)) {
+        order.addProducts([item])
+        newItem = OrderProduct.findOne({where: {productId: id}})
+      } else {
+        newItem = await OrderProduct.create(item)
+        await newItem.save()
+      }
     } else {
       newItem = {
         productId: id,
         quantity,
         purchasingPrice: price
       }
-      req.session.cart.push(newItem)
+      if (req.session.cart) {
+        req.session.cart.push(newItem)
+      } else req.session.cart = [newItem]
     }
 
     if (newItem) res.status(201).send(newItem)
@@ -83,13 +96,22 @@ router.post('/checkout', async (req, res, next) => {
 
 router.delete('/:id', async (req, res, next) => {
   try {
-    const targetItem = await OrderProduct.findByPk(req.params.id)
-    if (targetItem.quantity <= 1) {
-      await targetItem.destroy()
-      res.sendStatus(204)
+    let productId = req.params.id
+    if (req.user) {
+      let order = await Order.getActiveOrder(req.user)
+      order.orderProducts.map(async item => {
+        if (productId === item.productId) {
+          await item.destroy()
+          res.sendStatus(204)
+        }
+      })
     } else {
-      targetItem.quantity--
-      await targetItem.save()
+      let order = req.session.cart
+      order.map((item, index) => {
+        if (productId === item.productId) {
+          order.splice(index, 1)
+        }
+      })
     }
   } catch (error) {
     next(error)

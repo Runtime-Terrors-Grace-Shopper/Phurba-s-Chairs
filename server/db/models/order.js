@@ -87,4 +87,12 @@ Order.prototype.addProducts = async function(guestCart) {
   }
 }
 
+Order.prototype.inCart = async function(productId) {
+  let cart = this.orderProducts
+  for (let i = 0; i < cart.length; i++) {
+    if (cart[i].productId === productId) return true
+  }
+  return false
+}
+
 module.exports = Order

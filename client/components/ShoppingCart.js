@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {Link, Redirect} from 'react-router-dom'
 import {getCart, checkoutCart} from '../store/cart'
 import CartItem from './CartItem'
-import OrderDetail from './OrderDetail'
+import CheckedOut from './CheckedOut'
 
 class Cart extends React.Component {
   constructor(props) {
@@ -37,9 +37,9 @@ class Cart extends React.Component {
             <div key={item.id}>
               <CartItem
                 id={item.productId}
-                name={item.purchasingPrice}
-                //price={item.price}
-                // quantity={item.quantity}
+                name={item.product.name}
+                price={item.purchasingPrice}
+                quantity={item.quantity}
               />
             </div>
           ))}

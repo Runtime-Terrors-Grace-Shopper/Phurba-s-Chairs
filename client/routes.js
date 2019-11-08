@@ -7,7 +7,7 @@ import {getUser, getCart} from './store'
 import AllProducts from './components/AllProducts'
 import SingleProduct from './components/SingleProduct'
 import ShoppingCart from './components/ShoppingCart'
-import OrderDetail from './components/OrderDetail'
+import CheckedOut from './components/CheckedOut'
 
 /**
  * COMPONENT
@@ -27,7 +27,7 @@ class Routes extends Component {
         <Route path="/signup" component={Signup} />
         <Route path="/products/:id" component={SingleProduct} />
         <Route path="/products" component={AllProducts} />
-        <Route path="/cart/checkout" component={OrderDetail} />
+        <Route path="/cart/checkout" component={CheckedOut} />
         <Route path="/cart" component={ShoppingCart} />
         {isLoggedIn && (
           <Switch>

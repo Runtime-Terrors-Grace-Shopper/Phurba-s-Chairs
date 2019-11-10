@@ -24,6 +24,7 @@ class SingleProduct extends React.Component {
       quantity: this.state.quantity
     }
     this.props.addItemToCart(item)
+    alert(`added ${this.state.quantity} to the cart`)
   }
   handleChange(e) {
     e.preventDefault()

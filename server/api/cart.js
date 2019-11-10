@@ -33,42 +33,30 @@ router.get('/:id', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    const {id, price} = req.body
-    let quantity
-    if (req.body.quantity) {
-      quantity = +req.body.quantity
-    } else {
-      quantity = 1
+    const {id, price, quantity} = req.body
+    let newItem = {
+      productId: id,
+      quantity,
+      purchasingPrice: price
     }
-    let newItem
+    let newCart
     if (req.user) {
       let order = await Order.getActiveOrder(req.user)
-      let item = {
-        orderId: order.id,
-        productId: id,
-        quantity,
-        purchasingPrice: price
-      }
-
       if (order.inCart(id)) {
-        order.addProducts([item])
-        newItem = OrderProduct.findOne({where: {productId: id}})
+        order.addProducts([newItem])
+        newItem = await OrderProduct.findOne({where: {productId: id}})
       } else {
-        newItem = await OrderProduct.create(item)
-        await newItem.save()
+        newItem = await OrderProduct.create(newItem)
       }
+      newCart = await Order.getActiveOrder(req.user)
     } else {
-      newItem = {
-        productId: id,
-        quantity,
-        purchasingPrice: price
-      }
       if (req.session.cart) {
         req.session.cart.push(newItem)
       } else req.session.cart = [newItem]
+      newCart = req.session
     }
 
-    if (newItem) res.status(201).send(newItem)
+    if (newCart) res.status(201).send(newCart)
   } catch (error) {
     next(error)
   }
@@ -96,22 +84,48 @@ router.post('/checkout', async (req, res, next) => {
 
 router.delete('/:id', async (req, res, next) => {
   try {
-    let productId = req.params.id
+    let itemId = req.params.id
     if (req.user) {
-      let order = await Order.getActiveOrder(req.user)
-      order.orderProducts.map(async item => {
-        if (productId === item.productId) {
-          await item.destroy()
-          res.sendStatus(204)
-        }
-      })
+      const toBeDestroyed = await OrderProduct.findByPk(itemId)
+      await toBeDestroyed.destroy()
     } else {
-      let order = req.session.cart
-      order.map((item, index) => {
-        if (productId === item.productId) {
-          order.splice(index, 1)
-        }
-      })
+      // let order = req.session.cart
+      // order.map((item, index) => {
+      //   if (productId === item.productId) {
+      //     order.splice(index, 1)
+      //   }
+      // })
+    }
+    res.sendStatus(204)
+  } catch (error) {
+    next(error)
+  }
+})
+router.put('/increase/:id', async (req, res, next) => {
+  try {
+    const item = await OrderProduct.findOne({
+      where: {id: req.params.id},
+      include: [{model: Product, as: 'product'}]
+    })
+    if (req.user) {
+      item.quantity++
+      await item.save()
+    }
+    res.status(200).send(item)
+  } catch (error) {
+    next(error)
+  }
+})
+router.put('/decrease/:id', async (req, res, next) => {
+  try {
+    const item = await OrderProduct.findOne({
+      where: {id: req.params.id},
+      include: [{model: Product, as: 'product'}]
+    })
+    if (req.user) {
+      item.quantity--
+      await item.save()
+      res.status(200).send(item)
     }
   } catch (error) {
     next(error)

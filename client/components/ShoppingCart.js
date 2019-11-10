@@ -3,7 +3,6 @@ import {connect} from 'react-redux'
 import {Link, Redirect} from 'react-router-dom'
 import {getCart, checkoutCart} from '../store/cart'
 import CartItem from './CartItem'
-import OrderDetail from './OrderDetail'
 
 class Cart extends React.Component {
   constructor(props) {
@@ -22,11 +21,17 @@ class Cart extends React.Component {
   render() {
     const {cart} = this.props
     if (cart.length <= 0) {
-      return null
+      return (
+        <div>
+          <h3>Cart</h3>
+          <h3>Subtotal:</h3>
+          <p>0.00</p>
+        </div>
+      )
     }
     let total = 0
     cart.forEach(item => {
-      let itemTotal = item.purchasingPrice * item.quantity
+      let itemTotal = item.product.price * item.quantity
       total += itemTotal
     })
     return (
@@ -36,10 +41,12 @@ class Cart extends React.Component {
           {cart.map(item => (
             <div key={item.productId}>
               <CartItem
-                id={item.productId}
-                name={item.purchasingPrice}
-                //price={item.price}
-                // quantity={item.quantity}
+                id={item.id}
+                productId={item.productId}
+                name={item.product.name}
+                imageUrl={item.product.imageUrl}
+                price={item.product.price}
+                quantity={item.quantity}
               />
             </div>
           ))}
@@ -48,16 +55,20 @@ class Cart extends React.Component {
             <div>
               <p>{total.toFixed(2)}</p>
               <div>
-                <Link
-                  to={{
-                    pathname: `/cart/checkout/${total}`,
-                    state: {id: cart[0].orderId}
-                  }}
-                >
-                  <button type="submit" onClick={() => this.handleSubmit()}>
-                    Checkout
-                  </button>
-                </Link>
+                {total ? (
+                  <Link
+                    to={{
+                      pathname: `/cart/checkout/${total}`,
+                      state: {id: cart[0].orderId}
+                    }}
+                  >
+                    <button type="submit" onClick={() => this.handleSubmit()}>
+                      Checkout
+                    </button>
+                  </Link>
+                ) : (
+                  <div />
+                )}
               </div>
             </div>
           </div>

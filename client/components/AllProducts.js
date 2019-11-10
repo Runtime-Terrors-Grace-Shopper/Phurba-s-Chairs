@@ -42,7 +42,9 @@ class AllProducts extends React.Component {
                 if (product.category === category) {
                   return (
                     <li className="category-item" key={index}>
-                      <Link to={`/products/${product.id}`}>{product.name}</Link>
+                      <Link to={`/products/${product.id}`}>
+                        {`${product.name}, ${product.id}`}
+                      </Link>
                       <img src={product.imageUrl} />
                       <button
                         onClick={() =>
@@ -66,7 +68,8 @@ class AllProducts extends React.Component {
   }
 }
 const mapStateToProps = state => ({
-  products: state.product.allProducts
+  products: state.product.allProducts,
+  cart: state.cart.cart
 })
 
 const mapDispatchToProps = dispatch => ({

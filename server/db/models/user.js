@@ -81,9 +81,13 @@ const setSaltAndPassword = user => {
 
 User.beforeCreate(setSaltAndPassword)
 User.afterCreate(async user => {
-  const order = await Order.create()
-  order.userId = user.id
-  await order.save()
+  try {
+    const order = await Order.create()
+    order.userId = user.id
+    await order.save()
+  } catch (error) {
+    console.log(error)
+  }
 })
 User.beforeUpdate(setSaltAndPassword)
 User.beforeBulkCreate(users => {

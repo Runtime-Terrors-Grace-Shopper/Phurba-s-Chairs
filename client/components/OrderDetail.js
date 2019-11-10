@@ -12,14 +12,20 @@ class OrderDetail extends React.Component {
   }
 
   async componentDidMount() {
-    const {data} = await axios.get(`/api/order/${this.props.location.state.id}`)
-    this.setState({
-      address: data.shippingAddress,
-      products: data.orderProducts.map(item => [
-        item.product.name,
-        item.quantity
-      ])
-    })
+    try {
+      const {data} = await axios.get(
+        `/api/order/${this.props.location.state.id}`
+      )
+      this.setState({
+        address: data.shippingAddress,
+        products: data.orderProducts.map(item => [
+          item.product.name,
+          item.quantity
+        ])
+      })
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   render() {

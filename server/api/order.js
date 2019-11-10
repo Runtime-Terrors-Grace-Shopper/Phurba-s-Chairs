@@ -18,4 +18,19 @@ router.get('/:id', async (req, res, next) => {
   }
 })
 
+router.get('/', async (req, res, next) => {
+  try {
+    const orders = await Order.findAll({
+      where: {
+        status: 'Completed',
+        userId: req.user.id
+      }
+    })
+    if (!orders) res.sendStatus(404)
+    else res.json(orders)
+  } catch (error) {
+    next(error)
+  }
+})
+
 module.exports = router

@@ -17,36 +17,40 @@ router.get('/', async (req, res, next) => {
 })
 
 router.get('/:id', async (req, res, next) => {
-  const user = await User.findOne({
-    where: {
-      id: req.params.id
-    },
-    attributes: ['id', 'name', 'email'],
-    include: [
-      {
-        model: Order,
-        where: {
-          status: 'Completed'
-        },
-        include: [
-          {
-            model: OrderProduct,
-            include: [
-              {
-                model: Product,
-                as: 'product'
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  })
+  try {
+    const user = await User.findOne({
+      where: {
+        id: req.params.id
+      },
+      attributes: ['id', 'name', 'email'],
+      include: [
+        {
+          model: Order,
+          where: {
+            status: 'Completed'
+          },
+          include: [
+            {
+              model: OrderProduct,
+              include: [
+                {
+                  model: Product,
+                  as: 'product'
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    })
 
-  if (user === null) {
-    res.sendStatus(404)
-  } else {
-    res.json(user)
+    if (user === null) {
+      res.sendStatus(404)
+    } else {
+      res.json(user)
+    }
+  } catch (error) {
+    console.log(error)
   }
 })
 

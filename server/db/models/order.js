@@ -85,7 +85,7 @@ Order.prototype.addProducts = async function(guestCart) {
   }
 }
 
-Order.prototype.inCart = async function(productId) {
+Order.prototype.inCart = function(productId) {
   let cart = this.orderProducts
   for (let i = 0; i < cart.length; i++) {
     if (cart[i].productId === productId) return true
@@ -94,8 +94,12 @@ Order.prototype.inCart = async function(productId) {
 }
 
 Order.prototype.deleteItem = async function(itemId) {
-  const toBeDestroyed = await OrderProduct.findOne({where: {id: itemId}})
-  await toBeDestroyed.destroy
+  try {
+    const toBeDestroyed = await OrderProduct.findOne({where: {id: itemId}})
+    await toBeDestroyed.destroy
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 module.exports = Order

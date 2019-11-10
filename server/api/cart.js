@@ -33,29 +33,30 @@ router.get('/:id', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    const {id, price} = req.body
-    const quantity = +req.body.quantity
-    let newItem
+    const {id, price, quantity} = req.body
+    let newItem = {
+      productId: id,
+      quantity,
+      purchasingPrice: price
+    }
+    let newCart
     if (req.user) {
       let order = await Order.getActiveOrder(req.user)
-      let item = {
-        orderId: order.id,
-        productId: id,
-        quantity,
-        purchasingPrice: price
+      if (order.inCart(id)) {
+        order.addProducts([newItem])
+        newItem = await OrderProduct.findOne({where: {productId: id}})
+      } else {
+        newItem = await OrderProduct.create(newItem)
       }
-      newItem = await OrderProduct.create(item)
-      await newItem.save()
+      newCart = await Order.getActiveOrder(req.user)
     } else {
-      newItem = {
-        productId: id,
-        quantity,
-        purchasingPrice: price
-      }
-      req.session.cart.push(newItem)
+      if (req.session.cart) {
+        req.session.cart.push(newItem)
+      } else req.session.cart = [newItem]
+      newCart = req.session
     }
 
-    if (newItem) res.status(201).send(newItem)
+    if (newCart) res.status(201).send(newCart)
   } catch (error) {
     next(error)
   }
@@ -83,13 +84,48 @@ router.post('/checkout', async (req, res, next) => {
 
 router.delete('/:id', async (req, res, next) => {
   try {
-    const targetItem = await OrderProduct.findByPk(req.params.id)
-    if (targetItem.quantity <= 1) {
-      await targetItem.destroy()
-      res.sendStatus(204)
+    let itemId = req.params.id
+    if (req.user) {
+      const toBeDestroyed = await OrderProduct.findByPk(itemId)
+      await toBeDestroyed.destroy()
     } else {
-      targetItem.quantity--
-      await targetItem.save()
+      // let order = req.session.cart
+      // order.map((item, index) => {
+      //   if (productId === item.productId) {
+      //     order.splice(index, 1)
+      //   }
+      // })
+    }
+    res.sendStatus(204)
+  } catch (error) {
+    next(error)
+  }
+})
+router.put('/increase/:id', async (req, res, next) => {
+  try {
+    const item = await OrderProduct.findOne({
+      where: {id: req.params.id},
+      include: [{model: Product, as: 'product'}]
+    })
+    if (req.user) {
+      item.quantity++
+      await item.save()
+    }
+    res.status(200).send(item)
+  } catch (error) {
+    next(error)
+  }
+})
+router.put('/decrease/:id', async (req, res, next) => {
+  try {
+    const item = await OrderProduct.findOne({
+      where: {id: req.params.id},
+      include: [{model: Product, as: 'product'}]
+    })
+    if (req.user) {
+      item.quantity--
+      await item.save()
+      res.status(200).send(item)
     }
   } catch (error) {
     next(error)

@@ -38,7 +38,8 @@ Order.getActiveOrder = async user => {
                 'color',
                 'description',
                 'name',
-                'imageUrl'
+                'imageUrl',
+                'price'
               ]
             }
           ]
@@ -52,9 +53,6 @@ Order.getActiveOrder = async user => {
 }
 
 Order.prototype.addProducts = async function(guestCart) {
-  /// take this this.id
-  /// create new guestCart with that OrderId and those ProductIds
-  //// check to see if productId exist in the active order, don't do anything, other wise add the product
   try {
     const orderId = this.id
     const userCart = this.orderProducts
@@ -85,6 +83,19 @@ Order.prototype.addProducts = async function(guestCart) {
   } catch (error) {
     console.log(error)
   }
+}
+
+Order.prototype.inCart = async function(productId) {
+  let cart = this.orderProducts
+  for (let i = 0; i < cart.length; i++) {
+    if (cart[i].productId === productId) return true
+  }
+  return false
+}
+
+Order.prototype.deleteItem = async function(itemId) {
+  const toBeDestroyed = await OrderProduct.findOne({where: {id: itemId}})
+  await toBeDestroyed.destroy
 }
 
 module.exports = Order

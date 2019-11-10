@@ -24,6 +24,7 @@ class SingleProduct extends React.Component {
       quantity: this.state.quantity
     }
     this.props.addItemToCart(item)
+    alert(`added ${this.state.quantity} to the cart`)
   }
   handleChange(e) {
     e.preventDefault()
@@ -31,15 +32,7 @@ class SingleProduct extends React.Component {
   }
 
   render() {
-    const {
-      name,
-      price,
-      stock,
-      category,
-      description,
-      color,
-      imageUrl
-    } = this.props.singleProduct
+    const {name, stock, description, imageUrl} = this.props.singleProduct
     return (
       <div>
         <h3>{name}</h3>

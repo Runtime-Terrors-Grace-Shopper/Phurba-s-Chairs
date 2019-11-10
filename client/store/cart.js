@@ -6,6 +6,8 @@ const GOT_ITEM_IN_CART = 'GOT_ITEM_IN_CART'
 const ADDED_ITEM_TO_CART = 'ADDED_ITEM_TO_CART'
 const DELETED_ITEM_FROM_CART = 'DELETED_ITEM_FROM_CART'
 const EDITED_ITEM_IN_CART = 'EDITED_ITEM_IN_CART'
+const INCREASED_QUANTITY = 'INCREASED_QUANTITY'
+const DECREASED_QUANTITY = 'DECREASED_QUANTITY'
 
 const checkedOutCart = () => {
   return {type: CHECKED_OUT_CART}
@@ -19,12 +21,19 @@ const gotItemInCart = item => {
   return {type: GOT_ITEM_IN_CART, item}
 }
 
-const addedItemToCart = item => {
-  return {type: ADDED_ITEM_TO_CART, item}
+const addedItemToCart = cart => {
+  return {type: ADDED_ITEM_TO_CART, cart}
 }
 
 const deletedItemFromCart = itemId => {
   return {type: DELETED_ITEM_FROM_CART, itemId}
+}
+
+const increasedQuantity = item => {
+  return {type: INCREASED_QUANTITY, item}
+}
+const decreasedQuantity = item => {
+  return {type: DECREASED_QUANTITY, item}
 }
 
 const editedItemInCart = item => {
@@ -61,7 +70,8 @@ export const getItemInCart = id => async dispatch => {
 export const addItemToCart = body => async dispatch => {
   try {
     const {data} = await axios.post('/api/cart', body)
-    dispatch(addedItemToCart(data))
+    const cart = data.orderProducts ? data.orderProducts : data.cart
+    dispatch(addedItemToCart(cart))
   } catch (error) {
     console.error(error)
   }
@@ -71,6 +81,24 @@ export const deleteItemFromCart = id => async dispatch => {
   try {
     await axios.delete(`/api/cart/${id}`)
     dispatch(deletedItemFromCart(id))
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export const increaseQuantity = id => async dispatch => {
+  try {
+    const {data} = await axios.put(`api/cart/increase/${id}`)
+    dispatch(increasedQuantity(data))
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export const decreaseQuantity = id => async dispatch => {
+  try {
+    const {data} = await axios.put(`api/cart/decrease/${id}`)
+    dispatch(decreasedQuantity(data))
   } catch (error) {
     console.error(error)
   }
@@ -97,21 +125,40 @@ const cartReducer = (state = cartState, action) => {
     case GOT_ITEM_IN_CART:
       return {...state, cartItem: action.item}
     case ADDED_ITEM_TO_CART:
-      return {...state, cart: [...state.cart, action.item]}
+      return {...state, cart: action.cart}
     case DELETED_ITEM_FROM_CART:
+      let copy = [...state.cart]
+      let updated = copy.filter(item => {
+        return item.id !== action.itemId
+      })
       return {
         ...state,
-        cart: state.cart.filter(item => {
-          return item.id !== action.itemId
-        })
+        cart: updated
       }
-    case EDITED_ITEM_IN_CART:
-      return {
-        ...state,
-        cart: state.cart.map(item => {
-          return item.id === action.item.id ? action.item : item
-        })
-      }
+    case INCREASED_QUANTITY:
+      let beforeIncrease = [...state.cart]
+      let afterIncrease = beforeIncrease.map(item => {
+        if (item.id === action.item.id) return action.item
+        else return item
+      })
+      return {...state, cart: afterIncrease}
+    case DECREASED_QUANTITY:
+      let beforeDecrease = [...state.cart]
+      let afterDecrease = beforeDecrease.map(item => {
+        if (item.id === action.item.id) return action.item
+        else return item
+      })
+      let filtered = afterDecrease.filter(item => {
+        return item.quantity > 0
+      })
+      return {...state, cart: filtered}
+    // case EDITED_ITEM_IN_CART:
+    //   return {
+    //     ...state,
+    //     cart: state.cart.map(item => {
+    //       return item.id === action.item.id ? action.item : item
+    //     })
+    //   }
     case CHECKED_OUT_CART:
       return {...state, cart: []}
     default:

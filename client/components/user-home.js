@@ -9,6 +9,38 @@ export const UserHome = props => {
   const {email, isLoggedIn} = props
 
   return (
+    <div
+      id="carouselExampleSlidesOnly"
+      className="carousel slide"
+      data-ride="carousel"
+    >
+      <div className="carousel-inner">
+        <div className="carousel-item active">
+          <img
+            src="../../../public/rooms/room.jpg"
+            className="d-block w-100"
+            alt="..."
+          />
+        </div>
+        <div className="carousel-item">
+          <img
+            src="../../public/rooms/room2.jpg"
+            className="d-block w-100"
+            alt="..."
+          />
+        </div>
+        <div className="carousel-item">
+          <img
+            src="../../public/rooms/room3.jpg"
+            className="d-block w-100"
+            alt="..."
+          />
+        </div>
+      </div>
+    </div>
+  )
+
+  /*
     <div className="jumbotron">
       <div id="home">
         {isLoggedIn ? (
@@ -17,8 +49,7 @@ export const UserHome = props => {
           <h1 className="display-3">Welcome to Phurbiture</h1>
         )}
       </div>
-    </div>
-  )
+    </div> */
 }
 
 /**

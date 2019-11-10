@@ -32,15 +32,7 @@ class SingleProduct extends React.Component {
   }
 
   render() {
-    const {
-      name,
-      price,
-      stock,
-      category,
-      description,
-      color,
-      imageUrl
-    } = this.props.singleProduct
+    const {name, stock, description, imageUrl} = this.props.singleProduct
     return (
       <div>
         <h3>{name}</h3>

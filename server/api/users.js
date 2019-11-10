@@ -1,7 +1,17 @@
 const router = require('express').Router()
 const {User, Order, Product, OrderProduct} = require('../db/models')
 
-router.get('/', async (req, res, next) => {
+const isAdmin = () => {
+  return (req, res, next) => {
+    if (req.user && req.user.isAdmin) {
+      next()
+    } else {
+      res.status(403).send('Permission Denied')
+    }
+  }
+}
+
+router.get('/', isAdmin(), async (req, res, next) => {
   try {
     const users = await User.findAll({
       // explicitly select only the id and email fields - even though
@@ -16,36 +26,35 @@ router.get('/', async (req, res, next) => {
 })
 
 router.get('/:id', async (req, res, next) => {
-  const user = await User.findOne({
-    where: {
-      id: req.params.id
-    },
-    attributes: ['id', 'name', 'email'],
-    include: [
-      {
-        model: Order,
-        where: {
-          status: 'Completed'
-        },
-        include: [
-          {
-            model: OrderProduct,
-            include: [
-              {
-                model: Product,
-                as: 'product'
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  })
-
-  if (user === null) {
-    res.sendStatus(404)
-  } else {
+  if (req.user && req.user.id === req.params.id) {
+    const user = await User.findOne({
+      where: {
+        id: req.params.id
+      },
+      attributes: ['id', 'name', 'email'],
+      include: [
+        {
+          model: Order,
+          where: {
+            status: 'Completed'
+          },
+          include: [
+            {
+              model: OrderProduct,
+              include: [
+                {
+                  model: Product,
+                  as: 'product'
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    })
     res.json(user)
+  } else {
+    res.sendStatus(404)
   }
 })
 

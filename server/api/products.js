@@ -1,6 +1,16 @@
 const router = require('express').Router()
 const {Product} = require('../db/models')
 
+const isAdmin = () => {
+  return (req, res, next) => {
+    if (req.user && req.user.isAdmin) {
+      next()
+    } else {
+      res.status(403).send('Permission Denied')
+    }
+  }
+}
+
 router.get('/', async (req, res, next) => {
   try {
     const products = await Product.findAll()
@@ -10,7 +20,7 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-router.post('/', async (req, res, next) => {
+router.post('/', isAdmin(), async (req, res, next) => {
   try {
     if (!req.body) {
       return res.sendStatus(400)
@@ -35,7 +45,7 @@ router.get('/:id', async (req, res, next) => {
   }
 })
 
-router.put('/:id', async (req, res, next) => {
+router.put('/:id', isAdmin(), async (req, res, next) => {
   try {
     const targetProduct = await Product.findByPk(req.params.id)
     const updatedProduct = await targetProduct.update(req.body)
@@ -45,7 +55,7 @@ router.put('/:id', async (req, res, next) => {
   }
 })
 
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id', isAdmin(), async (req, res, next) => {
   try {
     await Product.destroy({
       where: {

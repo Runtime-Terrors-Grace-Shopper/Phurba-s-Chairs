@@ -24,31 +24,23 @@ const Navbar = ({handleClick, isLoggedIn}) => (
           <ul className="navbar-nav">
             {/* The navbar will show these links after you log in */}
             <li className="nav-item">
-              <Link to="/home">
-                <a className="nav-link" href="#">
-                  Home
-                </a>
+              <Link className="nav-link" to="/home">
+                Home
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/login">
-                <a className="nav-link" href="#" onClick={handleClick}>
-                  Logout
-                </a>
+              <a className="nav-link" href="#" onClick={handleClick}>
+                Logout
+              </a>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/products">
+                Products
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/products">
-                <a className="nav-link" href="#">
-                  Products
-                </a>
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link to="/cart">
-                <a className="nav-link" href="#">
-                  MyCart
-                </a>
+              <Link className="nav-link" to="/cart">
+                MyCart
               </Link>
             </li>
           </ul>
@@ -56,31 +48,23 @@ const Navbar = ({handleClick, isLoggedIn}) => (
           <ul className="navbar-nav">
             {/* The navbar will show these links before you log in */}
             <li className="nav-item">
-              <Link to="/login">
-                <a className="nav-link" href="#">
-                  Login
-                </a>
+              <Link className="nav-link" to="/login">
+                Login
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/signup">
-                <a className="nav-link" href="#">
-                  Sign Up
-                </a>
+              <Link className="nav-link" to="/signup">
+                Sign Up
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/products">
-                <a className="nav-link" href="#">
-                  Products
-                </a>
+              <Link className="nav-link" to="/products">
+                Products
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/cart">
-                <a className="nav-link" href="#">
-                  MyCart
-                </a>
+              <Link className="nav-link" to="/cart">
+                MyCart
               </Link>
             </li>
           </ul>
@@ -98,7 +82,6 @@ const Navbar = ({handleClick, isLoggedIn}) => (
         </button>
       </form>
     </nav>
-    <hr />
   </div>
 )
 

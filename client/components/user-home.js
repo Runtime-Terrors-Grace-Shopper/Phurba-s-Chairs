@@ -9,47 +9,62 @@ export const UserHome = props => {
   const {email, isLoggedIn} = props
 
   return (
-    <div
-      id="carouselExampleSlidesOnly"
-      className="carousel slide"
-      data-ride="carousel"
-    >
+    <div id="rooms" className="carousel slide" data-ride="carousel">
       <div className="carousel-inner">
         <div className="carousel-item active">
           <img
-            src="../../../public/rooms/room.jpg"
+            src="https://images.pexels.com/photos/1909791/pexels-photo-1909791.jpeg"
             className="d-block w-100"
             alt="..."
           />
         </div>
         <div className="carousel-item">
           <img
-            src="../../public/rooms/room2.jpg"
+            src="https://images.pexels.com/photos/90317/pexels-photo-90317.jpeg"
             className="d-block w-100"
             alt="..."
           />
         </div>
         <div className="carousel-item">
           <img
-            src="../../public/rooms/room3.jpg"
+            src="https://images.pexels.com/photos/1918291/pexels-photo-1918291.jpeg"
             className="d-block w-100"
             alt="..."
           />
+        </div>{' '}
+        <div className="carousel-item">
+          <img
+            src="https://images.pexels.com/photos/1457842/pexels-photo-1457842.jpeg"
+            className="d-block w-100"
+            alt="..."
+          />
+        </div>{' '}
+        <div className="carousel-item">
+          <img
+            src="https://images.pexels.com/photos/1080721/pexels-photo-1080721.jpeg"
+            className="d-block w-100"
+            alt="..."
+          />
+        </div>{' '}
+        <div className="carousel-item">
+          <img
+            src="https://images.pexels.com/photos/2724749/pexels-photo-2724749.jpeg"
+            className="d-block w-100"
+            alt="..."
+          />
+        </div>
+      </div>
+      <div className="carousel-caption">
+        <div id="home">
+          {isLoggedIn ? (
+            <h1 className="display-3">Welcome Back to Phurbiture {email} </h1>
+          ) : (
+            <h1 className="display-3">Welcome to Phurbiture</h1>
+          )}
         </div>
       </div>
     </div>
   )
-
-  /*
-    <div className="jumbotron">
-      <div id="home">
-        {isLoggedIn ? (
-          <h1 className="display-3">Welcome Back to Phurbiture {email} </h1>
-        ) : (
-          <h1 className="display-3">Welcome to Phurbiture</h1>
-        )}
-      </div>
-    </div> */
 }
 
 /**

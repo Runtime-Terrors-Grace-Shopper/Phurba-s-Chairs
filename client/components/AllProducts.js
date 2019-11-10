@@ -34,6 +34,7 @@ class AllProducts extends React.Component {
 
     return (
       <div id="products">
+        <h1>ALL PRODUCTS</h1>
         {categories.map((category, index) => {
           return (
             <ul className="category" key={index}>

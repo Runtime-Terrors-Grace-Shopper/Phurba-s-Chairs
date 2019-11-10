@@ -7,7 +7,7 @@ import {getAllProducts} from '../store/product'
 
 const Navbar = ({handleClick, isLoggedIn}) => (
   <div>
-    <nav className="navbar navbar-expand navbar-dark bg-dark">
+    <nav className="navbar navbar-expand navbar-light bg-light">
       <h1 className="navbar-brand" href="/home">
         Phurbiture
       </h1>
@@ -77,7 +77,7 @@ const Navbar = ({handleClick, isLoggedIn}) => (
           placeholder="Search"
           aria-label="Search"
         />
-        <button className="btn btn-primary" type="submit">
+        <button className="btn btn-dark" type="submit">
           Search
         </button>
       </form>

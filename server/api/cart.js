@@ -36,7 +36,7 @@ router.post('/', async (req, res, next) => {
     const {id, price, quantity} = req.body
     let newItem = {
       productId: id,
-      quantity,
+      quantity: +quantity,
       purchasingPrice: price
     }
     let newCart

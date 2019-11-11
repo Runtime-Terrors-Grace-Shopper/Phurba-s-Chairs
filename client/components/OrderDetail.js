@@ -1,8 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {getActiveOrder} from '../store/order'
-import axios from 'axios'
-import {Link} from 'react-router-dom'
+
 
 class OrderDetail extends React.Component {
   constructor(props) {

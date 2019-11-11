@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {Product} = require('../db/models')
+const {Product, OrderProduct} = require('../db/models')
 
 const isAdmin = () => {
   return (req, res, next) => {
@@ -48,8 +48,12 @@ router.get('/:id', async (req, res, next) => {
 router.put('/:id', isAdmin(), async (req, res, next) => {
   try {
     const targetProduct = await Product.findByPk(req.params.id)
-    const updatedProduct = await targetProduct.update(req.body)
-    res.status(202).json(updatedProduct)
+    if (targetProduct) {
+      const updatedProduct = await targetProduct.update(req.body)
+      res.status(202).json(updatedProduct)
+    } else {
+      res.status(404).send('Page Not Found')
+    }
   } catch (error) {
     next(error)
   }

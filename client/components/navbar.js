@@ -8,9 +8,9 @@ import {getAllProducts} from '../store/product'
 const Navbar = ({handleClick, isLoggedIn}) => (
   <div>
     <nav className="navbar navbar-expand navbar-light bg-light">
-      <h1 className="navbar-brand" href="/home">
+      <Link to="/home" className="navbar-brand">
         Phurbiture
-      </h1>
+      </Link>
       <button
         className="navbar-toggler"
         type="button"
@@ -48,6 +48,11 @@ const Navbar = ({handleClick, isLoggedIn}) => (
           <ul className="navbar-nav">
             {/* The navbar will show these links before you log in */}
             <li className="nav-item">
+              <Link className="nav-link" to="/home">
+                Home
+              </Link>
+            </li>
+            <li className="nav-item">
               <Link className="nav-link" to="/login">
                 Login
               </Link>
@@ -77,7 +82,7 @@ const Navbar = ({handleClick, isLoggedIn}) => (
           placeholder="Search"
           aria-label="Search"
         />
-        <button className="btn btn-dark" type="submit">
+        <button className="btn btn-primary" type="submit">
           Search
         </button>
       </form>

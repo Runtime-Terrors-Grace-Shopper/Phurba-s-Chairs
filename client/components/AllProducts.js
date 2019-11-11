@@ -21,6 +21,7 @@ class AllProducts extends React.Component {
       price
     }
     this.props.addItemToCart(item)
+    alert('added one to the cart')
   }
   render() {
     let categories = []

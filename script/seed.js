@@ -112,42 +112,51 @@ async function seed() {
     })
   ])
 
+  const productsArray = await Product.findAll()
+
+  let productsHash = {}
+
+  productsArray.forEach(product => {
+    let id = product.id
+    productsHash[id] = product.price
+  })
+
   const orderProducts = await Promise.all([
     OrderProduct.create({
       orderId: 1,
       productId: 1,
       quantity: 3,
-      purchasingPrice: 5.0
+      purchasingPrice: productsHash[1]
     }),
     OrderProduct.create({
       orderId: 1,
       productId: 3,
       quantity: 2,
-      purchasingPrice: 2.0
+      purchasingPrice: productsHash[3]
     }),
     OrderProduct.create({
       orderId: 1,
       productId: 2,
       quantity: 2,
-      purchasingPrice: 4.0
+      purchasingPrice: productsHash[2]
     }),
     OrderProduct.create({
       orderId: 6,
       productId: 2,
       quantity: 2,
-      purchasingPrice: 4.0
+      purchasingPrice: productsHash[2]
     }),
     OrderProduct.create({
       orderId: 6,
       productId: 1,
       quantity: 2,
-      purchasingPrice: 4.0
+      purchasingPrice: productsHash[1]
     }),
     OrderProduct.create({
       orderId: 7,
       productId: 2,
       quantity: 2,
-      purchasingPrice: 4.0
+      purchasingPrice: productsHash[2]
     })
   ])
 

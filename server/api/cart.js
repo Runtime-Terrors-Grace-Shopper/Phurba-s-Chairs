@@ -46,12 +46,7 @@ router.post('/', async (req, res, next) => {
         order.addProducts([newItem])
         newItem = await OrderProduct.findOne({where: {productId: id}})
       } else {
-        let newItem = {
-          orderId: order.id,
-          productId: id,
-          quantity,
-          purchasingPrice: price
-        }
+        newItem.orderId = order.id
         newItem = await OrderProduct.create(newItem)
       }
       newCart = await Order.getActiveOrder(req.user)

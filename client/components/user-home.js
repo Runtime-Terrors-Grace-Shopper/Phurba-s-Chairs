@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
+import AllCategories from './AllCategories'
+import Deals from './Deals'
 
 /**
  * COMPONENT
@@ -9,7 +11,12 @@ export const UserHome = props => {
   const {email, isLoggedIn} = props
 
   return (
-    <div id="rooms" className="carousel slide" data-ride="carousel">
+    <div
+      id="rooms"
+      className="carousel slide"
+      data-ride="carousel"
+      data-interval="3000"
+    >
       <div className="carousel-inner">
         <div className="carousel-item active">
           <img
@@ -31,21 +38,21 @@ export const UserHome = props => {
             className="d-block w-100"
             alt="..."
           />
-        </div>{' '}
+        </div>
         <div className="carousel-item">
           <img
             src="https://images.pexels.com/photos/1457842/pexels-photo-1457842.jpeg"
             className="d-block w-100"
             alt="..."
           />
-        </div>{' '}
+        </div>
         <div className="carousel-item">
           <img
             src="https://images.pexels.com/photos/1080721/pexels-photo-1080721.jpeg"
             className="d-block w-100"
             alt="..."
           />
-        </div>{' '}
+        </div>
         <div className="carousel-item">
           <img
             src="https://images.pexels.com/photos/2724749/pexels-photo-2724749.jpeg"
@@ -54,7 +61,7 @@ export const UserHome = props => {
           />
         </div>
       </div>
-      <div className="carousel-caption">
+      <div className="jumbotron carousel-caption">
         <div id="home">
           {isLoggedIn ? (
             <h1 className="display-3">Welcome Back to Phurbiture {email} </h1>
@@ -63,6 +70,8 @@ export const UserHome = props => {
           )}
         </div>
       </div>
+      <AllCategories />
+      <Deals />
     </div>
   )
 }

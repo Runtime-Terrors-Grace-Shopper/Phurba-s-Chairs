@@ -7,10 +7,10 @@ import {getAllProducts} from '../store/product'
 
 const Navbar = ({handleClick, isLoggedIn}) => (
   <div>
-    <nav className="navbar navbar-expand navbar-dark bg-dark">
-      <h1 className="navbar-brand" href="/home">
+    <nav className="navbar navbar-expand navbar-light bg-light">
+      <Link to="/home" className="navbar-brand">
         Phurbiture
-      </h1>
+      </Link>
       <button
         className="navbar-toggler"
         type="button"
@@ -47,6 +47,11 @@ const Navbar = ({handleClick, isLoggedIn}) => (
         ) : (
           <ul className="navbar-nav">
             {/* The navbar will show these links before you log in */}
+            <li className="nav-item">
+              <Link className="nav-link" to="/home">
+                Home
+              </Link>
+            </li>
             <li className="nav-item">
               <Link className="nav-link" to="/login">
                 Login

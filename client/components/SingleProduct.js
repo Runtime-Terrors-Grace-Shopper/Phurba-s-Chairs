@@ -43,6 +43,7 @@ class SingleProduct extends React.Component {
         <form onSubmit={e => this.addToCart(e)}>
           <input
             type="number"
+            min="0"
             placeholder="Quantity"
             value={this.state.quantity}
             onChange={this.handleChange}

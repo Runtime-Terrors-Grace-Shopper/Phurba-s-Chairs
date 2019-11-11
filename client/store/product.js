@@ -25,7 +25,6 @@ const deletedProduct = productId => {
 const updatedProduct = product => {
   return {type: UPDATED_PRODUCT, product}
 }
-
 export const getAllProducts = () => async dispatch => {
   try {
     const {data} = await axios.get('/api/products')

@@ -13,6 +13,7 @@ const isAdmin = () => {
 
 router.get('/', isAdmin(), async (req, res, next) => {
   try {
+    req.session.cart = []
     const users = await User.findAll({
       // explicitly select only the id and email fields - even though
       // users' passwords are encrypted, it won't help if we just
@@ -26,35 +27,41 @@ router.get('/', isAdmin(), async (req, res, next) => {
 })
 
 router.get('/:id', async (req, res, next) => {
-  if (req.user && req.user.id === req.params.id) {
-    const user = await User.findOne({
-      where: {
-        id: req.params.id
-      },
-      attributes: ['id', 'name', 'email'],
-      include: [
-        {
-          model: Order,
-          where: {
-            status: 'Completed'
-          },
-          include: [
-            {
-              model: OrderProduct,
-              include: [
-                {
-                  model: Product,
-                  as: 'product'
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    })
-    res.json(user)
-  } else {
-    res.sendStatus(404)
+  try {
+    if (req.user && +req.user.id === +req.params.id) {
+      const user = await User.findOne({
+        where: {
+          id: req.params.id
+        },
+        attributes: ['id', 'name', 'email'],
+        include: [
+          {
+            model: Order,
+            where: {
+              status: 'Completed'
+            },
+            required: false,
+            include: [
+              {
+                model: OrderProduct,
+                include: [
+                  {
+                    model: Product,
+                    required: false,
+                    as: 'product'
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      })
+      res.json(user)
+    } else {
+      res.status(403).send('Permission Denied')
+    }
+  } catch (error) {
+    console.log(error)
   }
 })
 

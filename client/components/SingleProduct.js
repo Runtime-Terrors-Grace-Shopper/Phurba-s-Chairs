@@ -24,6 +24,7 @@ class SingleProduct extends React.Component {
       quantity: this.state.quantity
     }
     this.props.addItemToCart(item)
+    alert(`added ${this.state.quantity} to the cart`)
   }
   handleChange(e) {
     e.preventDefault()
@@ -31,15 +32,7 @@ class SingleProduct extends React.Component {
   }
 
   render() {
-    const {
-      name,
-      price,
-      stock,
-      category,
-      description,
-      color,
-      imageUrl
-    } = this.props.singleProduct
+    const {name, stock, description, imageUrl} = this.props.singleProduct
     return (
       <div>
         <h3>{name}</h3>
@@ -50,6 +43,7 @@ class SingleProduct extends React.Component {
         <form onSubmit={e => this.addToCart(e)}>
           <input
             type="number"
+            min="0"
             placeholder="Quantity"
             value={this.state.quantity}
             onChange={this.handleChange}

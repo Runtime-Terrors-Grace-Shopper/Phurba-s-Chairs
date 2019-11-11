@@ -1,5 +1,4 @@
 import axios from 'axios'
-import {runInNewContext} from 'vm'
 
 const GOT_ALL_PRODUCTS = 'GOT_ALL_PRODUCTS'
 const GOT_SINGLE_PRODUCT = 'GOT_SINGLE_PRODUCT'
@@ -26,7 +25,6 @@ const deletedProduct = productId => {
 const updatedProduct = product => {
   return {type: UPDATED_PRODUCT, product}
 }
-
 export const getAllProducts = () => async dispatch => {
   try {
     const {data} = await axios.get('/api/products')
@@ -46,18 +44,30 @@ export const getSingleProduct = id => async dispatch => {
 }
 
 export const addProduct = body => async dispatch => {
-  const {data} = await axios.post('/api/products', body)
-  dispatch(addedProduct(data))
+  try {
+    const {data} = await axios.post('/api/products', body)
+    dispatch(addedProduct(data))
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 export const deleteProduct = id => async dispatch => {
-  await axios.delete(`/api/products/${id}`)
-  dispatch(deletedProduct(id))
+  try {
+    await axios.delete(`/api/products/${id}`)
+    dispatch(deletedProduct(id))
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 export const updateProduct = (id, body) => async dispatch => {
-  const {data} = await axios.put(`/api/products/${id}`, body)
-  dispatch(updatedProduct(data))
+  try {
+    const {data} = await axios.put(`/api/products/${id}`, body)
+    dispatch(updatedProduct(data))
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 const productState = {

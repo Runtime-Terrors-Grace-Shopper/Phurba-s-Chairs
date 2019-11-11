@@ -1,41 +1,54 @@
 import React from 'react'
-import axios from 'axios'
-import {Link} from 'react-router-dom'
+import {connect} from 'react-redux'
+import {getActiveOrder} from '../store/order'
 
 class OrderDetail extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {
-      address: '',
-      products: []
-    }
   }
 
-  async componentDidMount() {
-    const {data} = await axios.get(`/api/order/${this.props.location.state.id}`)
-    this.setState({
-      address: data.shippingAddress,
-      products: data.orderProducts.map(item => [
-        item.product.name,
-        item.quantity
-      ])
-    })
+  componentDidMount() {
+    this.props.getActiveOrder(this.props.location.state.id)
   }
 
   render() {
+    const {shippingAddress, orderProducts} = this.props.activeOrder
+    let total = 0
+    if (orderProducts) {
+      orderProducts.forEach(item => {
+        let itemTotal = item.product.price * item.quantity
+        total += itemTotal
+      })
+    }
     return (
       <div>
         <h3>Thank You for your Purchase!</h3>
         <p>Your Phurbiture will arrive soon!</p>
         <div>
           <h3>Order Summary:</h3>
-          <p>{this.state.products}</p>
-          <p>{this.props.location.state.total}</p>
-          <p>{this.state.address}</p>
+          <div>
+            {orderProducts &&
+              orderProducts.map(item => (
+                <div key={item.id}>
+                  <p>
+                    {item.quantity} {item.product.name}
+                  </p>
+                </div>
+              ))}
+          </div>
+          <p>Shipping Address: {shippingAddress}</p>
+          <p>Total: {total}</p>
         </div>
       </div>
     )
   }
 }
+const mapStateToProps = state => ({
+  activeOrder: state.order.activeOrder
+})
 
-export default OrderDetail
+const mapDispatchToProps = dispatch => ({
+  getActiveOrder: id => dispatch(getActiveOrder(id))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(OrderDetail)

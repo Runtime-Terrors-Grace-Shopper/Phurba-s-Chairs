@@ -28,7 +28,7 @@ router.get('/', isAdmin(), async (req, res, next) => {
 
 router.get('/:id', async (req, res, next) => {
   try {
-    if (req.user && +req.user.id === +req.params.id) {
+    if ((req.user && +req.user.id === +req.params.id) || req.user.isAdmin) {
       const user = await User.findOne({
         where: {
           id: req.params.id

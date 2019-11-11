@@ -2,7 +2,6 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {getActiveOrder} from '../store/order'
 
-
 class OrderDetail extends React.Component {
   constructor(props) {
     super(props)

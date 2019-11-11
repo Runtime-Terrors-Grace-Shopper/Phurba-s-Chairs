@@ -46,6 +46,12 @@ router.post('/', async (req, res, next) => {
         order.addProducts([newItem])
         newItem = await OrderProduct.findOne({where: {productId: id}})
       } else {
+        let newItem = {
+          orderId: order.id,
+          productId: id,
+          quantity,
+          purchasingPrice: price
+        }
         newItem = await OrderProduct.create(newItem)
       }
       newCart = await Order.getActiveOrder(req.user)
@@ -70,10 +76,18 @@ router.post('/checkout', async (req, res, next) => {
         status: 'Active'
       }
     })
+    let pastOrderData = await Order.findOne({
+      where: {
+        userId: req.user.id,
+        status: 'Completed'
+      }
+    })
+    if (!pastOrderData) {
+      pastOrderData = data
+    }
     await data.update({status: 'Completed'})
     const newOrder = await Order.create({
-      shippingAddress: data.shippingAddress,
-      creditCard: data.creditCard,
+      shippingAddress: pastOrderData.shippingAddress,
       userId: data.userId
     })
     res.json(newOrder)

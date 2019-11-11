@@ -54,37 +54,43 @@ Order.getActiveOrder = async user => {
 
 Order.prototype.addProducts = async function(guestCart) {
   try {
+    console.log('guest', guestCart)
+    console.log('user', this.orderProducts)
     const orderId = this.id
     const userCart = this.orderProducts
 
-    let updated = false
     for (let i = 0; i < guestCart.length; i++) {
-      updated = false
-      for (let j = 0; j < userCart.length; j++) {
-        if (guestCart[i].productId === userCart[j].productId) {
-          let quantity = userCart[j].quantity + guestCart[i].quantity
-          userCart[j].update({quantity})
-          updated = true
-          break
+      let updated = false
+      if (userCart.length === 0) {
+        return guestCart
+      } else {
+        for (let j = 0; j < userCart.length; j++) {
+          if (guestCart[i].productId === userCart[j].productId) {
+            let quantity = userCart[j].quantity + guestCart[i].quantity
+            await userCart[j].update({quantity})
+            updated = true
+            break
+          }
+        }
+        if (!updated) {
+          const orderProduct = await OrderProduct.create({
+            orderId,
+            productId: guestCart[i].productId,
+            quantity: guestCart[i].quantity,
+            purchasingPrice: guestCart[i].purchasingPrice
+          })
+          orderProduct.save()
+          updatedItem = await OrderProduct.findOne({
+            where: {
+              orderId
+            },
+            include: [{model: Product, as: 'product'}]
+          })
+          userCart.push(updatedItem)
         }
       }
-      if (!updated) {
-        const orderProduct = await OrderProduct.create({
-          orderId,
-          productId: guestCart[i].productId,
-          quantity: guestCart[i].quantity,
-          purchasingPrice: guestCart[i].purchasingPrice
-        })
-        orderProduct.save()
-        updatedItem = await OrderProduct.findOne({
-          where: {
-            orderId
-          },
-          include: [{model: Product, as: 'product'}]
-        })
-        userCart.push(updatedItem)
-      }
     }
+    console.log('inside order', userCart)
     return userCart
   } catch (error) {
     console.log(error)

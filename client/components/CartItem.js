@@ -52,7 +52,7 @@ class CartItem extends React.Component {
           +{' '}
         </button>
         <button
-          onClick={() => this.deleteItem(id)}
+          onClick={() => this.deleteItem(productId)}
           className="btn btn-sm btn-danger"
         >
           X

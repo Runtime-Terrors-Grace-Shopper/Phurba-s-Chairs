@@ -30,7 +30,6 @@ class Cart extends React.Component {
       )
     }
     let total = 0
-    console.log(cart)
     cart.forEach(item => {
       let itemTotal = item.product.price * item.quantity
       total += itemTotal

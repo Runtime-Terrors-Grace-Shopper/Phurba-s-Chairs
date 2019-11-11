@@ -6,7 +6,9 @@ router.get('/', async (req, res, next) => {
     if (req.user) {
       const order = await Order.getActiveOrder(req.user)
       if (req.session.cart) {
+        console.log('session', req.session.cart)
         order.orderProducts = await order.addProducts(req.session.cart)
+        console.log('inside route', order.orderProducts)
       }
       req.session.cart = []
       res.json(order.orderProducts)
@@ -55,6 +57,7 @@ router.post('/', async (req, res, next) => {
       if (req.session.cart) {
         let updated = false
         for (let i = 0; i < req.session.cart.length; i++) {
+          let item = req.session.cart[i]
           if (item.productId === newItem.productId) {
             item.quantity += newItem.quantity
             updated = true
@@ -93,17 +96,20 @@ router.post('/checkout', async (req, res, next) => {
 
 router.delete('/:id', async (req, res, next) => {
   try {
-    let itemId = req.params.id
+    let productId = +req.params.id
     if (req.user) {
-      const toBeDestroyed = await OrderProduct.findByPk(itemId)
+      const order = await Order.getActiveOrder(req.user)
+      let toBeDestroyed = await OrderProduct.findOne({
+        where: {orderId: order.id, productId}
+      })
       await toBeDestroyed.destroy()
     } else {
-      // let order = req.session.cart
-      // order.map((item, index) => {
-      //   if (productId === item.productId) {
-      //     order.splice(index, 1)
-      //   }
-      // })
+      let order = req.session.cart
+      order.map((item, index) => {
+        if (productId === item.productId) {
+          order.splice(index, 1)
+        }
+      })
     }
     res.sendStatus(204)
   } catch (error) {
@@ -113,19 +119,19 @@ router.delete('/:id', async (req, res, next) => {
 router.put('/increase/:id', async (req, res, next) => {
   try {
     let item
+    let productId = +req.params.id
     if (req.user) {
       const order = await Order.getActiveOrder(req.user)
       item = await OrderProduct.findOne({
-        where: {orderId: order.id},
+        where: {orderId: order.id, productId},
         include: [{model: Product, as: 'product'}]
       })
       item.quantity++
       await item.save()
     } else {
-      let productId = req.params.id
       for (let i = 0; i < req.session.cart.length; i++) {
         itemInCart = req.session.cart[i]
-        if (itemInCart.productId === +productId) {
+        if (+itemInCart.productId === productId) {
           console.log('dewdew', itemInCart)
           itemInCart.quantity++
           item = itemInCart
@@ -144,7 +150,7 @@ router.put('/decrease/:id', async (req, res, next) => {
     if (req.user) {
       const order = await Order.getActiveOrder(req.user)
       item = await OrderProduct.findOne({
-        where: {orderId: order.id},
+        where: {orderId: order.id, productId: req.params.id},
         include: [{model: Product, as: 'product'}]
       })
       item.quantity--

@@ -52,6 +52,7 @@ export const checkoutCart = () => async dispatch => {
 export const getCart = () => async dispatch => {
   try {
     const {data} = await axios.get('/api/cart')
+    console.log('thunk', data)
     dispatch(gotCart(data))
   } catch (error) {
     console.error(error)
@@ -129,7 +130,7 @@ const cartReducer = (state = cartState, action) => {
     case DELETED_ITEM_FROM_CART:
       let copy = [...state.cart]
       let updated = copy.filter(item => {
-        return item.id !== action.itemId
+        return item.productId !== action.itemId
       })
       return {
         ...state,
@@ -138,14 +139,14 @@ const cartReducer = (state = cartState, action) => {
     case INCREASED_QUANTITY:
       let beforeIncrease = [...state.cart]
       let afterIncrease = beforeIncrease.map(item => {
-        if (item.id === action.item.id) return action.item
+        if (item.productId === action.item.productId) return action.item
         else return item
       })
       return {...state, cart: afterIncrease}
     case DECREASED_QUANTITY:
       let beforeDecrease = [...state.cart]
       let afterDecrease = beforeDecrease.map(item => {
-        if (item.id === action.item.id) return action.item
+        if (item.productId === action.item.productId) return action.item
         else return item
       })
       let filtered = afterDecrease.filter(item => {

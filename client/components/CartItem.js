@@ -29,7 +29,6 @@ class CartItem extends React.Component {
 
   render() {
     const {id, productId, name, price, quantity, imageUrl} = this.props
-
     return quantity ? (
       <div>
         <Link to={`/products/${productId}`}>
@@ -38,7 +37,7 @@ class CartItem extends React.Component {
         <img src={imageUrl} />
         <p>{price} Each</p>
         <button
-          onClick={() => this.decrease(id)}
+          onClick={() => this.decrease(productId)}
           className="btn btn-sm btn-secondary"
         >
           {' '}
@@ -46,14 +45,14 @@ class CartItem extends React.Component {
         </button>
         <p>{quantity}</p>
         <button
-          onClick={() => this.increase(id)}
+          onClick={() => this.increase(productId)}
           className="btn btn-sm btn-secondary"
         >
           {' '}
           +{' '}
         </button>
         <button
-          onClick={() => this.deleteItem(id)}
+          onClick={() => this.deleteItem(productId)}
           className="btn btn-sm btn-danger"
         >
           X

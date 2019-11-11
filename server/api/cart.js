@@ -114,11 +114,12 @@ router.post('/checkout', async (req, res, next) => {
       req.session.cart.forEach(async product => {
         const targetProduct = await Product.findOne({
           where: {
-            id: product.id
+            id: product.productId
           }
         })
+        console.log(targetProduct)
         await targetProduct.update({
-          stock: (stock -= product.quantity)
+          stock: (targetProduct.stock -= product.quantity)
         })
       })
       req.session.cart = []

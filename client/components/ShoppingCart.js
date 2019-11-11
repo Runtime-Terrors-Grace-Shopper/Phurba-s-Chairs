@@ -31,7 +31,7 @@ class Cart extends React.Component {
     }
     let total = 0
     cart.forEach(item => {
-      let itemTotal = item.product.price * item.quantity
+      let itemTotal = item.purchasingPrice * item.quantity
       total += itemTotal
     })
     return (
@@ -45,7 +45,7 @@ class Cart extends React.Component {
                 productId={item.productId}
                 name={item.product.name}
                 imageUrl={item.product.imageUrl}
-                price={item.product.price}
+                price={item.purchasingPrice}
                 quantity={item.quantity}
               />
             </div>

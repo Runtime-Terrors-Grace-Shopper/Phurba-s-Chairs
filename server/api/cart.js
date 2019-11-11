@@ -21,15 +21,15 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-router.get('/:id', async (req, res, next) => {
-  try {
-    const cartItem = await OrderProduct.findByPk(req.params.id)
-    if (!cartItem) res.sendStatus(404)
-    else res.json(cartItem)
-  } catch (error) {
-    next(error)
-  }
-})
+// router.get('/:id', async (req, res, next) => {
+//   try {
+//     const cartItem = await OrderProduct.findByPk(req.params.id)
+//     if (!cartItem) res.sendStatus(404)
+//     else res.json(cartItem)
+//   } catch (error) {
+//     next(error)
+//   }
+// })
 
 router.post('/', async (req, res, next) => {
   try {
@@ -63,18 +63,62 @@ router.post('/', async (req, res, next) => {
   }
 })
 
-router.post('/checkout', async (req, res, next) => {
+router.get('/hello', async (req, res, next) => {
   try {
+    console.log(req.user.id)
     const data = await Order.findOne({
       where: {
         userId: req.user.id,
         status: 'Active'
-      }
+      },
+      include: [
+        {
+          model: OrderProduct,
+          include: [{model: Product, as: 'product'}]
+        }
+      ]
     })
-    await data.update({status: 'Completed'})
-    const newOrder = await Order.create({
-      userId: data.userId
-    })
+    console.log(data)
+    res.json(data)
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.post('/checkout', async (req, res, next) => {
+  try {
+    let newOrder
+    if (req.user) {
+      const data = await Order.findOne({
+        where: {
+          userId: req.user.id,
+          status: 'Active'
+        },
+        include: [
+          {
+            model: OrderProduct,
+            include: [{model: Product, as: 'product'}]
+          }
+        ]
+      })
+      //quantity update logic
+      data.orderProducts.forEach(async product => {
+        const targetProduct = await Product.findOne({
+          where: {
+            id: product.id
+          }
+        })
+        await targetProduct.update({
+          stock: (product.product.stock -= product.quantity)
+        })
+      })
+
+      await data.update({status: 'Completed'})
+      newOrder = await Order.create({
+        userId: data.userId
+      })
+    }
+
     res.json(newOrder)
   } catch (error) {
     next(error)

@@ -5,7 +5,7 @@ const Order = props => {
   let total = 0
   if (products) {
     products.forEach(item => {
-      let itemTotal = item.product.price * item.quantity
+      let itemTotal = item.purchasingPrice * item.quantity
       total += itemTotal
     })
   }
@@ -14,14 +14,14 @@ const Order = props => {
       {products.map(item => (
         <div key={item.id}>
           <p>
-            {item.quantity} {item.product.name}
+            {item.quantity} {item.product.name} - {item.purchasingPrice} Each
           </p>
-          <p>{item.product.price} Each</p>
         </div>
       ))}
       <div>
-        <h3>Total: {total}</h3>
-        <p>{placedOn}</p>
+        <h5>Total: {total.toFixed(2)}</h5>
+        <p>Order Placed on {placedOn.slice(0, 10)}</p>
+        <br />
       </div>
     </div>
   )

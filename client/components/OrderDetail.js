@@ -2,7 +2,6 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {getActiveOrder} from '../store/order'
 
-
 class OrderDetail extends React.Component {
   constructor(props) {
     super(props)
@@ -13,7 +12,7 @@ class OrderDetail extends React.Component {
   }
 
   render() {
-    const {shippingAddress, orderProducts} = this.props.activeOrder
+    const {orderProducts} = this.props.activeOrder
     let total = 0
     if (orderProducts) {
       orderProducts.forEach(item => {
@@ -37,7 +36,6 @@ class OrderDetail extends React.Component {
                 </div>
               ))}
           </div>
-          <p>Shipping Address: {shippingAddress}</p>
           <p>Total: {total}</p>
         </div>
       </div>

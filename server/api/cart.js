@@ -63,28 +63,6 @@ router.post('/', async (req, res, next) => {
   }
 })
 
-router.get('/hello', async (req, res, next) => {
-  try {
-    console.log(req.user.id)
-    const data = await Order.findOne({
-      where: {
-        userId: req.user.id,
-        status: 'Active'
-      },
-      include: [
-        {
-          model: OrderProduct,
-          include: [{model: Product, as: 'product'}]
-        }
-      ]
-    })
-    console.log(data)
-    res.json(data)
-  } catch (error) {
-    next(error)
-  }
-})
-
 router.post('/checkout', async (req, res, next) => {
   try {
     let newOrder
@@ -117,9 +95,22 @@ router.post('/checkout', async (req, res, next) => {
       newOrder = await Order.create({
         userId: data.userId
       })
+      res.json(newOrder)
+    } else {
+      //quantity update logic
+      req.session.cart.forEach(async product => {
+        const targetProduct = await Product.findOne({
+          where: {
+            id: product.id
+          }
+        })
+        await targetProduct.update({
+          stock: (stock -= product.quantity)
+        })
+      })
+      req.session.cart = []
+      res.sendStatus(201)
     }
-
-    res.json(newOrder)
   } catch (error) {
     next(error)
   }

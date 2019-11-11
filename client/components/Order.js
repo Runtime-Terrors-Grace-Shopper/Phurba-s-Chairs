@@ -11,6 +11,7 @@ const Order = props => {
   }
   return (
     <div key={id}>
+      <h5>Phurbiture Order # {id}</h5>
       {products.map(item => (
         <div key={item.id}>
           <p>
@@ -20,7 +21,7 @@ const Order = props => {
       ))}
       <div>
         <h5>Total: {total.toFixed(2)}</h5>
-        <p>Order Placed on {placedOn.slice(0, 10)}</p>
+        <p>Placed on {placedOn.slice(0, 10)}</p>
         <br />
       </div>
     </div>

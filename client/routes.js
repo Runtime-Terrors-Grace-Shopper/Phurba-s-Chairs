@@ -9,6 +9,7 @@ import SingleProduct from './components/SingleProduct'
 import ShoppingCart from './components/ShoppingCart'
 import OrderDetail from './components/OrderDetail'
 import OrderHistory from './components/OrderHistory'
+import NoPageFound from './components/NoPageFound'
 
 /**
  * COMPONENT
@@ -31,6 +32,7 @@ class Routes extends Component {
         <Route path="/cart/checkout" component={OrderDetail} />
         <Route path="/cart" component={ShoppingCart} />
         <Route exact path="/order" component={OrderHistory} />
+        <Route path="*" component={NoPageFound} />
 
         {/* Displays our Login component as a fallback */}
         <Route component={UserHome} />

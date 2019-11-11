@@ -76,7 +76,13 @@ Order.prototype.addProducts = async function(guestCart) {
           purchasingPrice: guestCart[i].purchasingPrice
         })
         orderProduct.save()
-        userCart.push(orderProduct)
+        updatedItem = await OrderProduct.findOne({
+          where: {
+            orderId
+          },
+          include: [{model: Product, as: 'product'}]
+        })
+        userCart.push(updatedItem)
       }
     }
     return userCart

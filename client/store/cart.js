@@ -145,7 +145,7 @@ const cartReducer = (state = cartState, action) => {
     case DECREASED_QUANTITY:
       let beforeDecrease = [...state.cart]
       let afterDecrease = beforeDecrease.map(item => {
-        if (item.id === action.item.id) return action.item
+        if (item.product.id === action.item.productId) return action.item
         else return item
       })
       let filtered = afterDecrease.filter(item => {

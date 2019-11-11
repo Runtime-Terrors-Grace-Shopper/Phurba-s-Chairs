@@ -55,20 +55,16 @@ class Cart extends React.Component {
             <div>
               <p>{total.toFixed(2)}</p>
               <div>
-                {total ? (
-                  <Link
-                    to={{
-                      pathname: `/cart/checkout/${total}`,
-                      state: {id: cart[0].orderId}
-                    }}
-                  >
-                    <button type="submit" onClick={() => this.handleSubmit()}>
-                      Checkout
-                    </button>
-                  </Link>
-                ) : (
-                  <div />
-                )}
+                <Link
+                  to={{
+                    pathname: '/cart/checkout',
+                    state: {id: cart[0].orderId}
+                  }}
+                >
+                  <button type="submit" onClick={() => this.handleSubmit()}>
+                    Checkout
+                  </button>
+                </Link>
               </div>
             </div>
           </div>

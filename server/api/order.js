@@ -24,7 +24,13 @@ router.get('/', async (req, res, next) => {
       where: {
         status: 'Completed',
         userId: req.user.id
-      }
+      },
+      include: [
+        {
+          model: OrderProduct,
+          include: [{model: Product, as: 'product'}]
+        }
+      ]
     })
     if (!orders) res.sendStatus(404)
     else res.json(orders)

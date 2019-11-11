@@ -39,6 +39,15 @@ async function seed() {
       imageUrl:
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7WTMxu2IiDoDS7mvXPqYOT7l5s_a-R81XD65dNoIY_yva1Atryw&s',
       phoneNumber: '2019157493'
+    }),
+    User.create({
+      name: 'Admin Smith',
+      email: 'admin@email.com',
+      password: '123',
+      imageUrl:
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7WTMxu2IiDoDS7mvXPqYOT7l5s_a-R81XD65dNoIY_yva1Atryw&s',
+      phoneNumber: '867cashnow',
+      isAdmin: true
     })
   ])
 

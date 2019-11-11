@@ -43,6 +43,11 @@ const Navbar = ({handleClick, isLoggedIn}) => (
                 MyCart
               </Link>
             </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/order">
+                Orders
+              </Link>
+            </li>
           </ul>
         ) : (
           <ul className="navbar-nav">

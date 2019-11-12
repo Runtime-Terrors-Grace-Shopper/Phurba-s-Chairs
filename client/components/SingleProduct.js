@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {getSingleProduct} from '../store/product'
+import Popup from './Popup'
 import {addItemToCart} from '../store/cart'
 
 class SingleProduct extends React.Component {
@@ -24,11 +25,6 @@ class SingleProduct extends React.Component {
       quantity: this.state.quantity
     }
     this.props.addItemToCart(item)
-    if (window.confirm('Go To Cart?')) {
-      location.href = '/cart'
-    } else {
-      alert(`added ${this.state.quantity} to the cart`)
-    }
   }
   handleChange(e) {
     e.preventDefault()
@@ -57,9 +53,12 @@ class SingleProduct extends React.Component {
           <input
             type="submit"
             disabled={!stock}
+            data-toggle="modal"
+            data-target="#test1"
             value={stock ? `ADD TO CART` : `SOLD OUT`}
           />
         </form>
+        <Popup quantity={this.state.quantity} history={this.props.history} />
       </div>
     )
   }

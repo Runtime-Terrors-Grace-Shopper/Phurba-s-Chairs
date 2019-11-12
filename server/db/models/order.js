@@ -88,7 +88,7 @@ Order.prototype.addProducts = async function(guestCart) {
         }
       }
     }
-    // console.log('inside order', userCart)
+
     return userCart
   } catch (error) {
     console.log(error)

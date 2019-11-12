@@ -14,7 +14,7 @@ class Popup extends React.Component {
   }
 
   render() {
-    const {quantity} = this.props
+    const quantity = this.props.quantity
     return (
       <div id="test1" className="modal" tabIndex="-1" role="dialog">
         <div className="modal-dialog" role="document">
@@ -31,7 +31,11 @@ class Popup extends React.Component {
               </button>
             </div>
             <div className="modal-body">
-              <p>Added 1 to Cart</p>
+              {quantity > 1 ? (
+                <p>{`Added ${quantity} to Cart`}</p>
+              ) : (
+                <p>Added 1 to Cart</p>
+              )}
             </div>
             <div className="modal-footer">
               <button

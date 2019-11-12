@@ -152,13 +152,6 @@ const cartReducer = (state = cartState, action) => {
         return item.quantity > 0
       })
       return {...state, cart: filtered}
-    // case EDITED_ITEM_IN_CART:
-    //   return {
-    //     ...state,
-    //     cart: state.cart.map(item => {
-    //       return item.id === action.item.id ? action.item : item
-    //     })
-    //   }
     case CHECKED_OUT_CART:
       return {...state, cart: []}
     default:

@@ -1,15 +1,26 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {getAllProducts} from '../store/product'
+import {addItemToCart} from '../store/cart'
 import {Link} from 'react-router-dom'
+import Popup from './Popup'
 
 class CategoryView extends React.Component {
   constructor(props) {
     super()
+    this.addOneToCart = this.addOneToCart.bind(this)
   }
 
   componentDidMount() {
     this.props.getAllProducts()
+  }
+  addOneToCart(id, price) {
+    const item = {
+      quantity: 1,
+      id,
+      price
+    }
+    this.props.addItemToCart(item)
   }
 
   render() {
@@ -32,9 +43,12 @@ class CategoryView extends React.Component {
                     className="btn btn-primary"
                     type="button"
                     disabled={!product.stock}
+                    data-toggle="modal"
+                    data-target="#test1"
                   >
                     {product.stock ? `ADD TO CART` : `SOLD OUT`}
                   </button>
+                  <Popup history={this.props.history} />
                   <img src={product.imageUrl} />
                 </li>
               )
@@ -51,7 +65,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  getAllProducts: () => dispatch(getAllProducts())
+  getAllProducts: () => dispatch(getAllProducts()),
+  addItemToCart: item => dispatch(addItemToCart(item))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(CategoryView)

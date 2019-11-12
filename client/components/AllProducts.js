@@ -22,12 +22,6 @@ class AllProducts extends React.Component {
       price
     }
     this.props.addItemToCart(item)
-    // if(confirm('Go To Cart?')) {
-    //   location.href='/cart'
-    // }
-    // this.props.history.push({
-    //   pathname: '/cart'
-    // })
   }
   render() {
     let categories = []

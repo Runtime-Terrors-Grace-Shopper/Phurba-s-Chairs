@@ -57,7 +57,7 @@ async function seed() {
       price: '350',
       stock: '98',
       imageUrl:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQR9kxQQOXVjJas4QRQGwuZoJKukmohKNFvFAKwPUX7lDPfCQjb0Q&s',
+        'https://www.boscovs.com/wcsstore/boscovs/images/store/product/images/57480858810702.jpg',
       category: 'Chair',
       color: 'Blue',
       description: 'A comfy place to sit'
@@ -67,7 +67,7 @@ async function seed() {
       price: '1200',
       stock: '37',
       imageUrl:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQR9kxQQOXVjJas4QRQGwuZoJKukmohKNFvFAKwPUX7lDPfCQjb0Q&s',
+        'https://m.media-amazon.com/images/I/61zqzLI-fYL._AC_UL320_.jpg',
       category: 'Table',
       color: 'Black',
       description: 'Where you eat'
@@ -77,7 +77,7 @@ async function seed() {
       price: '125',
       stock: '52',
       imageUrl:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQR9kxQQOXVjJas4QRQGwuZoJKukmohKNFvFAKwPUX7lDPfCQjb0Q&s',
+        'https://foter.com/photos/244/black-and-white-striped-dining-room-chairs.jpg?s=pi',
       category: 'Chair',
       color: 'Black',
       description: 'Where you sit when you eat'
@@ -87,7 +87,7 @@ async function seed() {
       price: '575',
       stock: '14',
       imageUrl:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQR9kxQQOXVjJas4QRQGwuZoJKukmohKNFvFAKwPUX7lDPfCQjb0Q&s',
+        'https://images-na.ssl-images-amazon.com/images/I/71Uq2IkRkXL._SY355_.jpg',
       category: 'Table',
       color: 'Brown',
       description: 'State of the art work desk'

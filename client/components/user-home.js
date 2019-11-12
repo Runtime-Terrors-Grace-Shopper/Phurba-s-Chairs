@@ -60,16 +60,17 @@ export const UserHome = props => {
             alt="..."
           />
         </div>
-      </div>
-      <div className="jumbotron carousel-caption">
-        <div id="home">
-          {isLoggedIn ? (
-            <h1 className="display-3">Welcome Back to Phurbiture {email} </h1>
-          ) : (
-            <h1 className="display-3">Welcome to Phurbiture</h1>
-          )}
+        <div className="jumbotron carousel-caption">
+          <div id="home">
+            {isLoggedIn ? (
+              <h1 className="display-3">Welcome Back to Phurbiture {email} </h1>
+            ) : (
+              <h1 className="display-3">Welcome to Phurbiture</h1>
+            )}
+          </div>
         </div>
       </div>
+
       <AllCategories />
       <Deals />
     </div>

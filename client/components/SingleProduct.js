@@ -50,8 +50,6 @@ class SingleProduct extends React.Component {
           />
           <input type="submit" value="ADD TO CART" />
         </form>
-
-        <button type="button">BUY NOW</button>
       </div>
     )
   }

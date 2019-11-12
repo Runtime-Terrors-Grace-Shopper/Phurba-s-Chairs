@@ -36,7 +36,7 @@ class SingleProduct extends React.Component {
   }
 
   render() {
-    const {name, stock, description, imageUrl} = this.props.singleProduct
+    const {name, stock, price, description, imageUrl} = this.props.singleProduct
     return (
       <div>
         <h3>{name}</h3>
@@ -44,6 +44,7 @@ class SingleProduct extends React.Component {
         <p>
           {description},there is only {stock} left
         </p>
+        <p>${price} each</p>
         <form onSubmit={e => this.addToCart(e)}>
           <input
             type="number"

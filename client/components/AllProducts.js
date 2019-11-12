@@ -21,7 +21,9 @@ class AllProducts extends React.Component {
       price
     }
     this.props.addItemToCart(item)
-    alert('added one to the cart')
+    this.props.history.push({
+      pathname: '/cart'
+    })
   }
   render() {
     let categories = []

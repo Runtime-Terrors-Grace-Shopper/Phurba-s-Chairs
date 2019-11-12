@@ -47,7 +47,7 @@ class AllProducts extends React.Component {
                       <Link to={`/products/${product.id}`}>
                         {`${product.name}, ${product.id}`}
                       </Link>
-                      <img src={product.imageUrl} />
+                      <p>${product.price}</p>
                       <button
                         onClick={() =>
                           this.addOneToCart(product.id, product.price)
@@ -58,6 +58,7 @@ class AllProducts extends React.Component {
                         ADD TO CART
                       </button>
                       {/*button disabled when qty is 0;*/}
+                      <img src={product.imageUrl} />
                     </li>
                   )
                 }

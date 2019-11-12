@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {Link, Redirect} from 'react-router-dom'
 import {getCart, checkoutCart} from '../store/cart'
+import StripeCheckout from 'react-stripe-checkout'
 import CartItem from './CartItem'
 
 class Cart extends React.Component {
@@ -16,6 +17,10 @@ class Cart extends React.Component {
 
   handleSubmit() {
     this.props.checkoutCart()
+    this.props.history.push({
+      pathname: '/cart/checkout',
+      state: {id: this.props.cart[0].orderId}
+    })
   }
 
   render() {
@@ -31,7 +36,7 @@ class Cart extends React.Component {
     }
     let total = 0
     cart.forEach(item => {
-      let itemTotal = item.product.price * item.quantity
+      let itemTotal = item.purchasingPrice * item.quantity
       total += itemTotal
     })
     return (
@@ -45,7 +50,7 @@ class Cart extends React.Component {
                 productId={item.productId}
                 name={item.product.name}
                 imageUrl={item.product.imageUrl}
-                price={item.product.price}
+                price={item.purchasingPrice}
                 quantity={item.quantity}
               />
             </div>
@@ -55,16 +60,10 @@ class Cart extends React.Component {
             <div>
               <p>{total.toFixed(2)}</p>
               <div>
-                <Link
-                  to={{
-                    pathname: '/cart/checkout',
-                    state: {id: cart[0].orderId}
-                  }}
-                >
-                  <button type="submit" onClick={() => this.handleSubmit()}>
-                    Checkout
-                  </button>
-                </Link>
+                <StripeCheckout
+                  token={() => this.handleSubmit()}
+                  stripeKey="pk_test_0vURHh6TIC3nhlq3J8R46qu7000i2XBd8K"
+                />
               </div>
             </div>
           </div>

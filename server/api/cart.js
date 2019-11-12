@@ -6,9 +6,7 @@ router.get('/', async (req, res, next) => {
     if (req.user) {
       const order = await Order.getActiveOrder(req.user)
       if (req.session.cart) {
-        console.log('session', req.session.cart)
         order.orderProducts = await order.addProducts(req.session.cart)
-        console.log('inside route', order.orderProducts)
       }
       req.session.cart = []
       res.json(order.orderProducts)
@@ -23,15 +21,15 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-router.get('/:id', async (req, res, next) => {
-  try {
-    const cartItem = await OrderProduct.findByPk(req.params.id)
-    if (!cartItem) res.sendStatus(404)
-    else res.json(cartItem)
-  } catch (error) {
-    next(error)
-  }
-})
+// router.get('/:id', async (req, res, next) => {
+//   try {
+//     const cartItem = await OrderProduct.findByPk(req.params.id)
+//     if (!cartItem) res.sendStatus(404)
+//     else res.json(cartItem)
+//   } catch (error) {
+//     next(error)
+//   }
+// })
 
 router.post('/', async (req, res, next) => {
   try {
@@ -78,17 +76,52 @@ router.post('/', async (req, res, next) => {
 
 router.post('/checkout', async (req, res, next) => {
   try {
-    const data = await Order.findOne({
-      where: {
-        userId: req.user.id,
-        status: 'Active'
-      }
-    })
-    await data.update({status: 'Completed'})
-    const newOrder = await Order.create({
-      userId: data.userId
-    })
-    res.json(newOrder)
+    let newOrder
+    if (req.user) {
+      const data = await Order.findOne({
+        where: {
+          userId: req.user.id,
+          status: 'Active'
+        },
+        include: [
+          {
+            model: OrderProduct,
+            include: [{model: Product, as: 'product'}]
+          }
+        ]
+      })
+      //quantity update logic
+      data.orderProducts.forEach(async product => {
+        const targetProduct = await Product.findOne({
+          where: {
+            id: product.id
+          }
+        })
+        await targetProduct.update({
+          stock: (product.product.stock -= product.quantity)
+        })
+      })
+
+      await data.update({status: 'Completed'})
+      newOrder = await Order.create({
+        userId: data.userId
+      })
+      res.json(newOrder)
+    } else {
+      //quantity update logic
+      req.session.cart.forEach(async product => {
+        const targetProduct = await Product.findOne({
+          where: {
+            id: product.productId
+          }
+        })
+        await targetProduct.update({
+          stock: (targetProduct.stock -= product.quantity)
+        })
+      })
+      req.session.cart = []
+      res.sendStatus(201)
+    }
   } catch (error) {
     next(error)
   }
@@ -132,7 +165,6 @@ router.put('/increase/:id', async (req, res, next) => {
       for (let i = 0; i < req.session.cart.length; i++) {
         itemInCart = req.session.cart[i]
         if (+itemInCart.productId === productId) {
-          console.log('dewdew', itemInCart)
           itemInCart.quantity++
           item = itemInCart
         }
@@ -160,7 +192,6 @@ router.put('/decrease/:id', async (req, res, next) => {
       for (let i = 0; i < req.session.cart.length; i++) {
         itemInCart = req.session.cart[i]
         if (itemInCart.productId === productId) {
-          console.log('dewdew', itemInCart)
           itemInCart.quantity--
           item = itemInCart
         }

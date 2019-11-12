@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {getAllProducts} from '../store/product'
 import {addItemToCart} from '../store/cart'
+import Popup from './Popup'
 
 class AllProducts extends React.Component {
   constructor(props) {
@@ -21,9 +22,12 @@ class AllProducts extends React.Component {
       price
     }
     this.props.addItemToCart(item)
-    this.props.history.push({
-      pathname: '/cart'
-    })
+    // if(confirm('Go To Cart?')) {
+    //   location.href='/cart'
+    // }
+    // this.props.history.push({
+    //   pathname: '/cart'
+    // })
   }
   render() {
     let categories = []
@@ -47,7 +51,7 @@ class AllProducts extends React.Component {
                   return (
                     <li className="category-item" key={index}>
                       <Link to={`/products/${product.id}`}>
-                        {`${product.name}, ${product.id}, ${product.stock}`}
+                        {`${product.name}, ${product.stock} left in stock`}
                       </Link>
                       <p>${product.price}</p>
                       <button
@@ -56,10 +60,13 @@ class AllProducts extends React.Component {
                         }
                         className="btn btn-primary"
                         type="button"
+                        data-toggle="modal"
+                        data-target="#test1"
                         disabled={!product.stock}
                       >
                         {product.stock ? `ADD TO CART` : `SOLD OUT`}
                       </button>
+                      <Popup history={this.props.history} />
                       <img src={product.imageUrl} />
                     </li>
                   )

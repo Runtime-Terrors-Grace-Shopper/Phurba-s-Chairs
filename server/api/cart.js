@@ -67,26 +67,15 @@ router.post('/', async (req, res, next) => {
 router.post('/checkout', async (req, res, next) => {
   try {
     if (req.user) {
-      const data = await Order.findOne({
-        where: {
-          userId: req.user.id,
-          status: 'Active'
-        },
-        include: [
-          {
-            model: OrderProduct,
-            include: [{model: Product, as: 'product'}]
-          }
-        ]
-      })
+      const data = await Order.getActiveOrder(req.user)
       data.orderProducts.forEach(async product => {
         const targetProduct = await Product.findOne({
           where: {
-            id: product.id
+            id: product.productId
           }
         })
         await targetProduct.update({
-          stock: (product.product.stock -= product.quantity)
+          stock: (targetProduct.stock -= product.quantity)
         })
       })
 

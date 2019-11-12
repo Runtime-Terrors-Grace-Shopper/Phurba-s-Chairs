@@ -16,6 +16,7 @@ router.get('/:id', async (req, res, next) => {
       else res.json(order)
     } else {
       //....this the guest
+      res.json(req.session)
     }
   } catch (error) {
     next(error)

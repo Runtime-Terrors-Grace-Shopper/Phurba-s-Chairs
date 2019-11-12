@@ -43,12 +43,17 @@ class SingleProduct extends React.Component {
         <form onSubmit={e => this.addToCart(e)}>
           <input
             type="number"
-            min="0"
+            min="1"
+            max={stock}
             placeholder="Quantity"
             value={this.state.quantity}
             onChange={this.handleChange}
           />
-          <input type="submit" value="ADD TO CART" />
+          <input
+            type="submit"
+            disabled={!stock}
+            value={stock ? `ADD TO CART` : `SOLD OUT`}
+          />
         </form>
       </div>
     )

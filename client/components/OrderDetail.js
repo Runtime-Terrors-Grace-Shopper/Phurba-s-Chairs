@@ -16,7 +16,7 @@ class OrderDetail extends React.Component {
     let total = 0
     if (orderProducts) {
       orderProducts.forEach(item => {
-        let itemTotal = item.product.price * item.quantity
+        let itemTotal = item.purchasingPrice * item.quantity
         total += itemTotal
       })
     }

@@ -58,7 +58,6 @@ class AllProducts extends React.Component {
                       >
                         {product.stock ? `ADD TO CART` : `SOLD OUT`}
                       </button>
-                      {/*button disabled when qty is 0;*/}
                       <img src={product.imageUrl} />
                     </li>
                   )

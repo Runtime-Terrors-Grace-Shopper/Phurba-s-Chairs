@@ -64,12 +64,6 @@ class Cart extends React.Component {
                   token={() => this.handleSubmit()}
                   stripeKey="pk_test_0vURHh6TIC3nhlq3J8R46qu7000i2XBd8K"
                 />
-                <Link
-                  to={{
-                    pathname: '/cart/checkout',
-                    state: {id: cart[0].orderId}
-                  }}
-                />
               </div>
             </div>
           </div>

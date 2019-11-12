@@ -15,7 +15,14 @@ router.get('/:id', async (req, res, next) => {
       if (!order) res.sendStatus(404)
       else res.json(order)
     } else {
-      //....this the guest
+      req.session.orderProducts = req.session.cart.map(item => {
+        return {
+          product: {name: item.product.name},
+          purchasingPrice: item.purchasingPrice,
+          quantity: item.quantity
+        }
+      })
+      req.session.cart = []
       res.json(req.session)
     }
   } catch (error) {

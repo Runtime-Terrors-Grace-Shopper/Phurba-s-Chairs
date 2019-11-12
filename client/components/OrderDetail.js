@@ -28,8 +28,8 @@ class OrderDetail extends React.Component {
           <h3>Order Summary:</h3>
           <div>
             {orderProducts &&
-              orderProducts.map(item => (
-                <div key={item.id}>
+              orderProducts.map((item, index) => (
+                <div key={index}>
                   <p>
                     {item.quantity} {item.product.name}
                   </p>

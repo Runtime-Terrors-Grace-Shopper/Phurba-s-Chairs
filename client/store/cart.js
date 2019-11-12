@@ -52,7 +52,6 @@ export const checkoutCart = () => async dispatch => {
 export const getCart = () => async dispatch => {
   try {
     const {data} = await axios.get('/api/cart')
-    console.log('thunk', data)
     dispatch(gotCart(data))
   } catch (error) {
     console.error(error)

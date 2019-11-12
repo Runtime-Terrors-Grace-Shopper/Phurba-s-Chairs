@@ -22,7 +22,11 @@ router.post('/login', async (req, res, next) => {
 
 router.post('/signup', async (req, res, next) => {
   try {
-    const user = await User.create(req.body)
+    const name = req.body.userName
+    const email = req.body.email
+    const password = req.body.password
+
+    const user = await User.create({email, password, name})
     // get active order for that user, add order products from req.session.cart to that
     req.login(user, err => (err ? next(err) : res.json(user)))
   } catch (err) {

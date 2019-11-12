@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {Link, Redirect} from 'react-router-dom'
 import {getCart, checkoutCart} from '../store/cart'
+import StripeCheckout from 'react-stripe-checkout'
 import CartItem from './CartItem'
 
 class Cart extends React.Component {
@@ -16,6 +17,10 @@ class Cart extends React.Component {
 
   handleSubmit() {
     this.props.checkoutCart()
+    this.props.history.push({
+      pathname: '/cart/checkout',
+      state: {id: this.props.cart[0].orderId}
+    })
   }
 
   render() {
@@ -55,6 +60,10 @@ class Cart extends React.Component {
             <div>
               <p>{total.toFixed(2)}</p>
               <div>
+                <StripeCheckout
+                  token={() => this.handleSubmit()}
+                  stripeKey="pk_test_0vURHh6TIC3nhlq3J8R46qu7000i2XBd8K"
+                />
                 <Link
                   to={{
                     pathname: '/cart/checkout',

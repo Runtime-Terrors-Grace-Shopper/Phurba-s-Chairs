@@ -67,10 +67,27 @@ const Navbar = ({handleClick, isLoggedIn}) => (
                 Sign Up
               </Link>
             </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/products">
+            <li className="nav-item dropdown">
+              <a
+                className="nav-link dropdown-toggle"
+                href="#"
+                id="productsDropdown"
+                role="button"
+                data-toggle="dropdown"
+              >
                 Products
-              </Link>
+              </a>
+              <div className="dropdown-menu">
+                <Link to="/products" className="dropdown-item">
+                  All Products
+                </Link>
+                <Link to="/category/Chairs" className="dropdown-item">
+                  Chairs
+                </Link>
+                <Link to="/category/Tables" className="dropdown-item">
+                  Tables
+                </Link>
+              </div>
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/cart">

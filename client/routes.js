@@ -10,6 +10,7 @@ import ShoppingCart from './components/ShoppingCart'
 import OrderDetail from './components/OrderDetail'
 import OrderHistory from './components/OrderHistory'
 import NoPageFound from './components/NoPageFound'
+import CategoryView from './components/CategoryView'
 
 /**
  * COMPONENT
@@ -27,6 +28,7 @@ class Routes extends Component {
         {/* Routes placed here are available to all visitors */}
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
+        <Route path="/category/:category" component={CategoryView} />
         <Route path="/products/:id" component={SingleProduct} />
         <Route path="/products" component={AllProducts} />
         <Route path="/cart/checkout" component={OrderDetail} />

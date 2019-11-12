@@ -69,11 +69,7 @@ class Cart extends React.Component {
                     pathname: '/cart/checkout',
                     state: {id: cart[0].orderId}
                   }}
-                >
-                  <button type="submit" onClick={() => this.handleSubmit()}>
-                    Checkout
-                  </button>
-                </Link>
+                />
               </div>
             </div>
           </div>

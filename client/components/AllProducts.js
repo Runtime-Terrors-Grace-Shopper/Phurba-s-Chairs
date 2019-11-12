@@ -21,7 +21,9 @@ class AllProducts extends React.Component {
       price
     }
     this.props.addItemToCart(item)
-    alert('added one to the cart')
+    this.props.history.push({
+      pathname: '/cart'
+    })
   }
   render() {
     let categories = []
@@ -45,7 +47,7 @@ class AllProducts extends React.Component {
                   return (
                     <li className="category-item" key={index}>
                       <Link to={`/products/${product.id}`}>
-                        {`${product.name}, ${product.id}`}
+                        {`${product.name}, ${product.id}, ${product.stock}`}
                       </Link>
                       <p>${product.price}</p>
                       <button
@@ -54,10 +56,10 @@ class AllProducts extends React.Component {
                         }
                         className="btn btn-primary"
                         type="button"
+                        disabled={!product.stock}
                       >
-                        ADD TO CART
+                        {product.stock ? `ADD TO CART` : `SOLD OUT`}
                       </button>
-                      {/*button disabled when qty is 0;*/}
                       <img src={product.imageUrl} />
                     </li>
                   )

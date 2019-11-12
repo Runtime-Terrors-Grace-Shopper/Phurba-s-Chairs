@@ -54,8 +54,6 @@ Order.getActiveOrder = async user => {
 
 Order.prototype.addProducts = async function(guestCart) {
   try {
-    console.log('guest', guestCart)
-    console.log('user', this.orderProducts)
     const orderId = this.id
     const userCart = this.orderProducts
 

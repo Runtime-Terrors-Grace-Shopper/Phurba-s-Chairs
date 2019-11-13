@@ -51,9 +51,9 @@ router.post('/', async (req, res, next) => {
             console.log(product.stock)
             if (item.quantity + newItem.quantity < product.stock) {
               item.quantity += newItem.quantity
-              updated = true
-              break
             }
+            updated = true
+            break
           }
         }
         if (!updated) {
@@ -138,7 +138,7 @@ router.put('/increase/:id', async (req, res, next) => {
         where: {orderId: order.id, productId},
         include: [{model: Product, as: 'product'}]
       })
-      if (+item.quantity <= +item.product.stock) {
+      if (+item.quantity < +item.product.stock) {
         item.quantity++
         await item.save()
       }

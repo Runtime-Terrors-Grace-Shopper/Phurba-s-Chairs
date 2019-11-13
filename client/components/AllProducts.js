@@ -60,7 +60,10 @@ class AllProducts extends React.Component {
                       >
                         {product.stock ? `ADD TO CART` : `SOLD OUT`}
                       </button>
-                      <Popup history={this.props.history} />
+                      <Popup
+                        stock={product.stock}
+                        history={this.props.history}
+                      />
                       <img src={product.imageUrl} />
                     </li>
                   )

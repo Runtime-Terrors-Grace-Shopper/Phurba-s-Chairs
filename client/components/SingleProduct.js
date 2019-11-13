@@ -58,7 +58,11 @@ class SingleProduct extends React.Component {
             value={stock ? `ADD TO CART` : `SOLD OUT`}
           />
         </form>
-        <Popup quantity={this.state.quantity} history={this.props.history} />
+        <Popup
+          stock={stock}
+          quantity={this.state.quantity}
+          history={this.props.history}
+        />
       </div>
     )
   }

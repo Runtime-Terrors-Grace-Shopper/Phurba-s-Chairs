@@ -52,6 +52,7 @@ class Cart extends React.Component {
                 imageUrl={item.product.imageUrl}
                 price={item.purchasingPrice}
                 quantity={item.quantity}
+                stock={item.product.stock}
               />
             </div>
           ))}

@@ -16,7 +16,9 @@ class CartItem extends React.Component {
     this.decrease = this.decrease.bind(this)
   }
   increase(id) {
-    this.props.increaseQuantity(id)
+    if (this.props.quantity <= this.props.stock) {
+      this.props.increaseQuantity(id)
+    }
   }
 
   decrease(id) {
@@ -28,7 +30,7 @@ class CartItem extends React.Component {
   }
 
   render() {
-    const {id, productId, name, price, quantity, imageUrl} = this.props
+    const {productId, name, price, quantity, imageUrl} = this.props
     return quantity ? (
       <div>
         <Link to={`/products/${productId}`}>

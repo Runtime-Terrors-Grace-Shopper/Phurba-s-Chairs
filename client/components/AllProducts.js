@@ -22,12 +22,6 @@ class AllProducts extends React.Component {
       price
     }
     this.props.addItemToCart(item)
-    // if(confirm('Go To Cart?')) {
-    //   location.href='/cart'
-    // }
-    // this.props.history.push({
-    //   pathname: '/cart'
-    // })
   }
   render() {
     let categories = []
@@ -66,7 +60,10 @@ class AllProducts extends React.Component {
                       >
                         {product.stock ? `ADD TO CART` : `SOLD OUT`}
                       </button>
-                      <Popup history={this.props.history} />
+                      <Popup
+                        stock={product.stock}
+                        history={this.props.history}
+                      />
                       <img src={product.imageUrl} />
                     </li>
                   )

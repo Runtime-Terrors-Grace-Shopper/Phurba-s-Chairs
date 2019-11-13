@@ -1,20 +1,25 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
 
 class Popup extends React.Component {
   constructor(props) {
     super(props)
-    this.handleClick = this.handleClick.bind(this)
+    this.goToCart = this.goToCart.bind(this)
+    this.contiueShopping = this.contiueShopping.bind(this)
   }
 
-  handleClick() {
+  goToCart() {
     this.props.history.push({
       pathname: '/cart'
     })
   }
+  contiueShopping() {
+    this.props.history.push({
+      pathname: '/products'
+    })
+  }
 
   render() {
-    const {quantity} = this.props
+    const {quantity, stock} = this.props
     return (
       <div id="test1" className="modal" tabIndex="-1" role="dialog">
         <div className="modal-dialog" role="document">
@@ -31,18 +36,25 @@ class Popup extends React.Component {
               </button>
             </div>
             <div className="modal-body">
-              <p>Added 1 to Cart</p>
+              {quantity > stock ? (
+                <p>We don't have that many</p>
+              ) : quantity > 1 ? (
+                <p>{`Added ${quantity} to Cart`}</p>
+              ) : (
+                <p>Added 1 to Cart</p>
+              )}
             </div>
             <div className="modal-footer">
               <button
                 type="button"
                 className="btn btn-secondary"
                 data-dismiss="modal"
+                onClick={this.contiueShopping}
               >
                 Continue Shopping
               </button>
               <button
-                onClick={this.handleClick}
+                onClick={this.goToCart}
                 type="button"
                 className="btn btn-primary"
                 data-dismiss="modal"

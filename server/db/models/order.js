@@ -65,7 +65,10 @@ Order.prototype.addProducts = async function(guestCart) {
         for (let j = 0; j < userCart.length; j++) {
           if (guestCart[i].productId === userCart[j].productId) {
             let quantity = userCart[j].quantity + guestCart[i].quantity
-            await userCart[j].update({quantity})
+            if (quantity < userCart[j].product.stock) {
+              await userCart[j].update({quantity})
+              break
+            }
             updated = true
             break
           }
@@ -88,7 +91,7 @@ Order.prototype.addProducts = async function(guestCart) {
         }
       }
     }
-    // console.log('inside order', userCart)
+
     return userCart
   } catch (error) {
     console.log(error)

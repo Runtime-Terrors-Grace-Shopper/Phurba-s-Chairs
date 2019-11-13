@@ -47,7 +47,9 @@ router.post('/', async (req, res, next) => {
         for (let i = 0; i < req.session.cart.length; i++) {
           let item = req.session.cart[i]
           if (item.productId === newItem.productId) {
-            item.quantity += newItem.quantity
+            if (item.quantity + newItem.quantity < product.stock) {
+              item.quantity += newItem.quantity
+            }
             updated = true
             break
           }
@@ -134,13 +136,18 @@ router.put('/increase/:id', async (req, res, next) => {
         where: {orderId: order.id, productId},
         include: [{model: Product, as: 'product'}]
       })
-      item.quantity++
-      await item.save()
+      if (+item.quantity < +item.product.stock) {
+        item.quantity++
+        await item.save()
+      }
     } else {
       for (let i = 0; i < req.session.cart.length; i++) {
         itemInCart = req.session.cart[i]
         if (+itemInCart.productId === productId) {
-          itemInCart.quantity++
+          let product = await Product.findByPk(productId)
+          if (itemInCart.quantity !== product.stock) {
+            itemInCart.quantity++
+          }
           item = itemInCart
         }
       }

@@ -47,8 +47,6 @@ router.post('/', async (req, res, next) => {
         for (let i = 0; i < req.session.cart.length; i++) {
           let item = req.session.cart[i]
           if (item.productId === newItem.productId) {
-            console.log(item.quantity + newItem.quantity)
-            console.log(product.stock)
             if (item.quantity + newItem.quantity < product.stock) {
               item.quantity += newItem.quantity
             }
